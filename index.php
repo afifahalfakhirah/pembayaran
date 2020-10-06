@@ -64,9 +64,9 @@ include('layout/header.php');
 
   <!-- Nav Item - Management Siswa -->
   <li class="nav-item active">
-    <a class="nav-link" href="index.html">
+    <a class="nav-link" href="index.php?page=managemen_siswa">
       <i class="fas fa-fw fa-tachmometer-alt"></i>
-      <span>Management Siswaa</span></a>
+      <span>Management Siswa</span></a>
   </li>
 
   <!-- Divider -->
@@ -179,6 +179,9 @@ include('layout/header.php');
             break;
             case 'managemen_user':
               echo "Halaman Managemen User";
+            break;
+            case 'managemen_siswa':
+              echo "Halaman Managemen Siswa";
             break;
           default:
             include "page/dashboard.php";
