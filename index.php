@@ -6,26 +6,19 @@ if (!isset($_SESSION['id'])) {
     return header("location: login.php");
 }
 
-// Tahu maksud ini ga? koneksi buat nyari id nya kan misalnya tingkatnya ortu nanti di web nya oru?
-// Bener, tapi sebenernya nggak
-// Ini ambil semua data yang login, cara tahu yang login ya dari id tadi
 
-// Nah ini $Koneksi itu ga tiba2 ada
-// gua jelas ga? iya
+// Ini ambil semua data yang login, cara tahu yang login itu dari id tadi
 
-// GUa pake teks aja la, ngelag
-// antara internet lu atau gua yaudss
+// ini $Koneksi itu ga tiba2 ada
+//template admin bootstrap
 
-// Pengen bagus tampilannya, kan? iya
-// Perkenalkan, template admin bootstrap
-
-// eh liat ni iya
+//ambil data login
 $data = $koneksi->query("SELECT * FROM tb_user WHERE id = '".$_SESSION['id']."'")->fetch_assoc();
 
-// Itu dah ambil data yg login
+// Itu sudah ambil data yg login
 // skrng bikin logika
-// pertama2 ambil levelnya dulu
-// eh tingkatnya
+
+// sekarang tingkatannya
 $tingkat = $data['tingkat'];
 
 // Masukin bagian2 tadi
@@ -35,14 +28,14 @@ include('layout/header.php');
 <div id="wrapper">
 
 <!-- Sidebar -->
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion" id="accordionSidebar">
 
   <!-- Sidebar - Brand -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
     <div class="sidebar-brand-icon rotate-n-15">
-      <i class="fas fa-laugh-wink"></i>
+      <i class="fas fa-child"></i>
     </div>
-    <div class="sidebar-brand-text mx-3">PAUD MELATI <sup></sup></div>
+    <div class="sidebar-brand-text mx-4">PAUD MELATI <sup></sup></div>
   </a>
 
   <!-- Divider -->
@@ -72,7 +65,7 @@ include('layout/header.php');
   <!-- Divider -->
   <hr class="sidebar-divider">
 <!-- misalnya mau umpetin menu Interface -->
-<!-- bjir salah logika, nah bener -->
+
 <?php if ($tingkat == 'admin') {?>
   <!-- Heading -->
   <div class="sidebar-heading">
@@ -178,10 +171,10 @@ include('layout/header.php');
               include "page/dashboard.php";
             break;
             case 'managemen_user':
-              echo "Halaman Managemen User";
+              echo "Selamat Datang Di Halaman Management User";
             break;
             case 'managemen_siswa':
-              echo "Halaman Managemen Siswa";
+              echo "Selamat Datang Di Halaman Management Siswa";
             break;
           default:
             include "page/dashboard.php";

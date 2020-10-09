@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Register</title>
+  <title>PAUD MELATI - Register</title>
 
   <!-- Custom fonts for this template-->
   <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -17,6 +17,11 @@
 
   <!-- Custom styles for this template-->
   <link href="assets/css/sb-admin-2.css" rel="stylesheet">
+  <style>
+  .card {
+  background: transparent !important;
+  }
+  </style>
 
 </head>
 
@@ -34,7 +39,7 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
               </div>
-              <!-- yaampun blm dimasukin ke action :'v -->
+              <!-- Masukkan ke action -->
               <form class="user" action="register_user.php" method="post">
                 <div class="form-group">
                     <input type="text" name="name" class="form-control form-control-user" id="exampleFirstName" placeholder="Nama">                 

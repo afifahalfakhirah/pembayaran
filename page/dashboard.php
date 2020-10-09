@@ -1,1 +1,1 @@
-<h2> ini adalah dashboard.</h2>
+<h2> Selamat Datang Di Halaman Dashboard.</h2>

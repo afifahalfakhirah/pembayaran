@@ -14,26 +14,24 @@ if(isset($_POST['daftar'])){
     $passwordHash = md5($password); // Ini hash ke md5
 
 
-    // Jadi begini logikanya
+    // logikanya
     /*
-     Kan ga semua data ada di tb_user, misalnya address itu ada di tb orang tua
-     nah di user ini cuma masukin nama email pass trus ambil idnya
+     Tidak semua data ada di tb_user, misalnya address itu ada di tb_orang tua.
+     di user ini hanya masukin nama, email, pass, lalu ambil idnya
      id yang diambil itu dimasuk lagi ke tb orang tua
-     jelas gga gua? iya
+
      */
 
-     // Pastiin password sama confirmnya sama dulu
+     // Pastikan password sama confirmnya sama 
     if ($password == $confirm_password) {
-        // Kalo sama
-        // Nah ini masukin data ke tb_user dulu
-    // yaudah tinggal eksekusi
+        // Kalo sudah sama
+        // masukan data ke tb_user dahulu
+    // langsung eksekusi
     $masukinDataKeUser = $koneksi->query("INSERT INTO tb_user (name, email, password, tingkat) VALUES('$name', '$email', '$passwordHash', '$tingkat')");
 
     // Ambil ID yang baru aja dimasukin
-    $id_user = $koneksi->insert_id; // keknya error ini, dah bener. coba lagi masukin data yg beda
-
-    // ooh gini aja
-    // cek dulu apa udah masuk ke user apa beloman
+    $id_user = $koneksi->insert_id; 
+    // cek dahulu apa sudah masuk ke user apa belum
 
     if ($masukinDataKeUser) {
         $masukinDataKeOrangTua = $koneksi->query("INSERT INTO tb_orang_tua (id_user, address, post_code, pekerjaan) 

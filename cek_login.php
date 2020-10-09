@@ -9,18 +9,18 @@ if(isset($_POST['masuk'])){
     // Ini query mysqlnya
     $cekUser = $koneksi->query("SELECT * FROM tb_user WHERE (email = '".$email."')");
 
-    // Ini cuma cek ada data berdasarkan email apa nggak
+    // cek ada data berdasarkan email apa tidak
     $data = $cekUser->num_rows;
 
     if ($data > 0){
         // Kalo ada emailnya, baru cek passwordnya
-        // Hash passwordnya pake md5 tadi trus cocokin
+        // Hash passwordnya pake md5 lalu cocokin
         $row = $cekUser->fetch_assoc();
 
         if (md5($password) == $row['password']){
-            // Sebenernya ngehash pake md5 gini doang kurang aman sih, tapi biarin aja :'v
-
-            // Yaudah sekarang tinggal dimasukin ke session
+           // hash pake md5
+           
+            // dimasukin ke session
             $_SESSION['id'] = $row['id'];
             $_SESSION['tingkat'] = $row['tingkat'];
             $_SESSION['status'] = "loggedIn";
@@ -29,9 +29,9 @@ if(isset($_POST['masuk'])){
             echo "password beda";
         }
 
-        // echo "ada usernya";
+        // echo "tidak ada emailnya";
     }else {
-        echo "ga ada";
+        echo "tidak ada";
     }
 }
 ?>
