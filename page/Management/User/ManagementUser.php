@@ -76,8 +76,9 @@
                 <div class="form-group">
                     <label>Tingkat</label>
                     <select name="tingkat"class="form-control">
-                        <option value="admin">Admin</option>
-                        <option value="bendahara">Bendahara</option>
+                        <!-- ternary ni -->
+                        <option value="admin" <?php echo $data['tingkat'] == 'admin' ? 'selected' : '' ?>>Admin</option>
+                        <option value="bendahara" <?php echo $data['tingkat'] == 'bendahara' ? 'selected' : '' ?>>Bendahara</option>
                     </select>
                 </div>
           </div>
@@ -152,22 +153,16 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form id="ubahForm-<?php echo $data['id']; ?>" method="POST" class="ubahForm">
-          <div class="modal-body">
+      <form id="gantiPassword-<?php echo $data['id']; ?>" method="POST" class="gantiPassword">
+      <div class="modal-body">
               <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
-              <input type="hidden" name="ubah" value="true">
+              <input type="hidden" name="gantiPassword" value="true">
                 <div class="form-group">
                     <label>Ganti Password</label>
-                    <input type="text" password="password" class="form-control" value="<?php echo $data['password']; ?>">
-                </div>
-                        <!-- ternary ni -->
-                        <option value="admin" <?php echo $data['tingkat'] == 'admin' ? 'selected' : '' ?>>Admin</option>
-                        <option value="bendahara" <?php echo $data['tingkat'] == 'bendahara' ? 'selected' : '' ?>>Bendahara</option>
-                    </select>
-                </div>
+                    <input type="password" name="password" class="form-control">
           </div>
           <div class="modal-footer">
-            <button type="submit" name="ubah" class="btn btn-primary">Simpan</button>
+            <button type="submit" name="gantiPassword" class="btn btn-primary">Simpan</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
           </div>
       </form>
@@ -182,7 +177,7 @@
 
 <script>
     $('#tambahForm').submit(function(e) {
-        e.preventDefault(); // Jangan submit dulu
+        e.preventDefault(); 
         let form = $(this)
 
         // baru ajaxnya
@@ -204,9 +199,8 @@
     // coba idenya stackoverflow
     $('form[id^="ubahForm"]').each(function () {
     $(this).submit(function(e) {
-        e.preventDefault(); // Jangan submit dulu
+        e.preventDefault(); 
         let form = $(this)
-        // tidak jalaaan
         // baru ajaxnya
         $.ajax({
             type: "POST",
@@ -227,9 +221,9 @@
 
 $('form[id^="gantiPassword"]').each(function () {
     $(this).submit(function(e) {
-        e.preventDefault(); // Jangan submit dulu
+        e.preventDefault(); 
         let form = $(this)
-        // tidak jalaaan
+        
         // baru ajaxnya
         $.ajax({
             type: "POST",
@@ -250,7 +244,7 @@ $('form[id^="gantiPassword"]').each(function () {
     async function hapusUser(nama, id) {
         let hapus = confirm(`Hapus ${nama}?`);
         if (hapus) {
-            // Bikin query buat hapus di sini
+            // Bikin query 
             await $.ajax({
                 type: "POST",
                 url: "page/Management/User/aksi.php",

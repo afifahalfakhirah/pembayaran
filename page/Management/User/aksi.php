@@ -20,6 +20,7 @@ if (isset($_POST['hapus'])) {
     }
 }
 
+// tambah data
 if (isset($_POST['tambah'])){
     $name = $_POST['nama'];
     $email = $_POST['email'];
@@ -38,11 +39,11 @@ if (isset($_POST['tambah'])){
     }
 }
 
+// edit
 if (isset($_POST['ubah'])){
     $id = $_POST['id'];
     $name = $_POST['nama'];
     $email = $_POST['email'];
-    // $password = $_POST['password'];
     $tingkat = $_POST['tingkat'];
 
     $hashPass = md5($password);
@@ -57,14 +58,15 @@ if (isset($_POST['ubah'])){
     }
 }
 
-if (isset($_POST['gantiPaasword'])){
-
-
+// ganti password
+if (isset($_POST['gantiPassword'])){
+    $id = $_POST['id'];
+    $password = $_POST['password'];
     $hashPass = md5($password);
 
-    $ubahUser = $koneksi->query("UPDATE tb_user SET password='password' WHERE id = '$id' ");
+    $ubahUser = $koneksi->query("UPDATE tb_user SET password='$hashPass' WHERE id = '$id' ");
 
-    if ($gantiPassword){
+    if ($ubahUser){
         echo 1;
     }else{
         echo 0;

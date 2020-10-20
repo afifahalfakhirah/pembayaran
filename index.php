@@ -16,8 +16,14 @@ if (!empty($page)) {
     case 'managemen-user':
       $title = "Managemen User - " . $namaSitus;
       break;
+    case 'managemen-orangtua':
+      $title = "Managemen Orang Tua - " . $namaSitus;
+      break;
     case 'managemen_siswa':
       $title = "Management Siswa - " . $namaSitus;
+      break;
+    case 'halaman_orangtua':
+      $title = "Halaman Orang Tua - " . $namaSitus;
       break;
     default:
       $title = "Dashboard - " . $namaSitus;
@@ -69,11 +75,25 @@ include('layout/header.php');
         <span>Dashboard</span></a>
     </li>
 
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <!-- Heading -->
+    <div class="sidebar-heading">
+      Management
+    </div>
+
     <!-- Nav Item - Management User -->
     <li class="nav-item active">
       <a class="nav-link" href="index.php?page=managemen-user">
         <i class="fas fa-fw fa-tachmometer-alt"></i>
         <span>Management User</span></a>
+    </li>
+
+    <!-- Nav Item - Management Siswa -->
+    <li class="nav-item active">
+      <a class="nav-link" href="index.php?page=managemen-orangtua">
+        <i class="fas fa-fw fa-tachmometer-alt"></i>
+        <span>Management Orang Tua</span></a>
     </li>
 
     <!-- Nav Item - Management Siswa -->
@@ -85,9 +105,23 @@ include('layout/header.php');
 
     <!-- Divider -->
     <hr class="sidebar-divider">
-    <!-- misalnya mau umpetin menu Interface -->
+    <!-- Heading -->
+    <div class="sidebar-heading">
+      Halaman
+    </div>
 
-    <?php if ($tingkat == 'admin') { ?>
+    <!-- Nav Item - Halaman Orang Tua -->
+    <li class="nav-item active">
+      <a class="nav-link" href="index.php?page=halaman_orangtua">
+        <i class="fas fa-fw fa-tachmometer-alt"></i>
+        <span>Halaman Orang Tua</span></a>
+    </li>
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <!-- misalnya mau umpetin menu Interface -->
+    <?php if ($tingkat == 'admin' or 'bendahara') { ?>
       <!-- Heading -->
       <div class="sidebar-heading">
         Interface
@@ -193,8 +227,14 @@ include('layout/header.php');
             case 'managemen-user':
               include "page/Management/User/ManagementUser.php";
               break;
+            case 'managemen-orangtua':
+              include "page/Management/Ortu/management_orangtua.php";
+              break;
             case 'managemen_siswa':
-              echo "Selamat Datang Di Halaman Management Siswa";
+              include "page/Management/Siswa/management_siswa.php";
+              break;
+            case 'halaman_orangtua':
+              include "page/Halaman/hlmnOrtu.php";
               break;
             default:
               $title = "dashboard";
