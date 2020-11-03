@@ -1,7 +1,7 @@
 <?php
 include('config/koneksi.php');
-
-if(isset($_POST['daftar'])){
+session_start();
+if (isset($_POST['daftar'])) {
     $name = mysqli_real_escape_string($koneksi, trim($_POST['name']));
     $email = mysqli_real_escape_string($koneksi, trim($_POST['email']));
     $password = mysqli_real_escape_string($koneksi, trim($_POST['password']));
@@ -22,31 +22,56 @@ if(isset($_POST['daftar'])){
 
      */
 
-     // Pastikan password sama confirmnya sama 
+    // Pastikan password sama confirmnya sama 
     if ($password == $confirm_password) {
         // Kalo sudah sama
         // masukan data ke tb_user dahulu
-    // langsung eksekusi
-    $masukinDataKeUser = $koneksi->query("INSERT INTO tb_user (name, email, password, tingkat) VALUES('$name', '$email', '$passwordHash', '$tingkat')");
+        // langsung eksekusi
 
-    // Ambil ID yang baru aja dimasukin
-    $id_user = $koneksi->insert_id; 
-    // cek dahulu apa sudah masuk ke user apa belum
+        $cekEmail = $koneksi->query("SELECT * FROM tb_user WHERE email = '$email'")->num_rows;
+        if ($cekEmail) {
+            // ya di sini
+            $_SESSION['name'] = $_POST['name'];
+            $_SESSION['email'] = $_POST['email'];
+            $_SESSION['password'] = $_POST['password'];
+            $_SESSION['confirm_password'] = $_POST['confirm_password'];
+            $_SESSION['address'] = $_POST['address'];
+            $_SESSION['post_code'] = $_POST['post_code'];
+            $_SESSION['pekerjaan'] = $_POST['pekerjaan'];
+            
+            $_SESSION['error_email'] = "Email sudah dipakai!";
+            // trus redirect
+            header("location: register.php");
+            
+        } else {
 
-    if ($masukinDataKeUser) {
-        $masukinDataKeOrangTua = $koneksi->query("INSERT INTO tb_orang_tua (id_user, address, post_code, pekerjaan) 
+            $masukinDataKeUser = $koneksi->query("INSERT INTO tb_user (name, email, password, tingkat) VALUES('$name', '$email', '$passwordHash', '$tingkat')");
+
+            // Ambil ID yang baru aja dimasukin
+            $id_user = $koneksi->insert_id;
+            // cek dahulu apa sudah masuk ke user apa belum
+
+            if ($masukinDataKeUser) {
+                $masukinDataKeOrangTua = $koneksi->query("INSERT INTO tb_orang_tua (id_user, address, post_code, pekerjaan) 
         VALUES('$id_user', '$address', '$post_code', '$pekerjaan')");
-    }
-   
-    // Jika sudah bisa masukin ke dataorangtua, maka pindahin ke login
-    if ($masukinDataKeOrangTua) {
-        header("location: login.php");
-    } else {
-        echo "error";
-    }
-    }else {
-        echo "confirm passwordnya ga sama";
-    }
+            }
 
-    
-} 
+            // Jika sudah bisa masukin ke dataorangtua, maka pindahin ke login
+            if ($masukinDataKeOrangTua) {
+                header("location: login.php");
+            } else {
+                echo "error";
+            }
+        }
+    } else {
+        $_SESSION['name'] = $_POST['name'];
+            $_SESSION['email'] = $_POST['email'];
+            $_SESSION['password'] = $_POST['password'];
+            $_SESSION['confirm_password'] = $_POST['confirm_password'];
+            $_SESSION['address'] = $_POST['address'];
+            $_SESSION['post_code'] = $_POST['post_code'];
+            $_SESSION['pekerjaan'] = $_POST['pekerjaan'];
+            $_SESSION['error_password'] = "confirm password tidak sama!";
+            header("location: register.php");
+    }
+}

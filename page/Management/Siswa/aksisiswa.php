@@ -1,20 +1,15 @@
 <?php
-include "../../../config/koneksi.php"; // salah
+include "../../../config/koneksi.php";
+session_start();
 
+// hapus siswa
 if (isset($_POST['hapus'])) {
-    $id = $_POST['id']; // ini id ortu
-    // yang lu hapus id di tb_user
-    // seharusnya pake id user
-    $ambilDataUser = $koneksi->query("SELECT id_user FROM tb_orang_tua WHERE id = '$id'")->fetch_assoc();
-    $idUser = $ambilDataUser['id_user'];
-    $hapusUser = $koneksi->query("DELETE FROM tb_user WHERE id = '" . $idUser . "'");
-    // terdiam wkwkwk saia lgi lihat, seharusnya udah bisa
-    if ($hapusUser) {
-        $hapusOrtu = $koneksi->query("DELETE FROM tb_orang_tua WHERE id_user = '" . $id . "'");
+    $id = $_POST['id'];
 
-        // 1 Maksudya true
-        // 0 Maksudnya false 
-        if ($hapusOrtu) {
+    if ($hapusUser) {
+        $hapusSiswa = $koneksi->query("DELETE FROM tb_anak WHERE id = '" . $id . "'");
+
+        if ($hapusSiswa) {
             echo 1;
         } else {
             echo 0;
@@ -24,60 +19,52 @@ if (isset($_POST['hapus'])) {
     }
 }
 
-// tambah data
+// tambah anak
 if (isset($_POST['tambah'])) {
 
+    $id_user = $_SESSION['id'];
     $name = $_POST['nama'];
     $nis = $_POST['nis'];
     $jenis_kelamin = $_POST['jenis_kelamin'];
     $tempat_lahir = $_POST['tempat_lahir'];
     $tgl_lahir = $_POST['tgl_lahir'];
+    $nama_ortu = $_POST['nama_ortu'];
+    $status = "Pending";
 
-        $id_user = $koneksi->insert_id;
+    if ($masukinDataKeSiswa) {
+        $masukinDataKeSiswa = $koneksi->query("INSERT INTO tb_anak (id_user, name, nis, jenis_kelamin, tempat_lahir,
+            tgl_lahir, nama_ortu, status) VALUES('$id_user', '$name', '$nis', '$jenis_kelamin', '$tempat_lahir', '$tgl_lahir', '$nama_ortu', '$status')");
 
-        if ($masukinDataKeUser) {
-            $masukinDataKeOrangTua = $koneksi->query("INSERT INTO tb_orang_tua (id_user, address, post_code, pekerjaan) 
-        VALUES('$id_user', '$address', '$post_code', '$pekerjaan')");
-
-            if ($masukinDataKeOrangTua) {
-                echo "Berhasil nambahin siswa";
-            } else {
-                echo "Gagal nambahin siswa";
-            }
+        if ($masukinDataKeSiswa) {
+            echo "Berhasil nambahin Siswa";
         } else {
-            echo "Gagal nambahin siswa";
+            echo "Gagal nambahin Siswa";
         }
+    } else {
+        echo "Gagal nambahin Siswa";
     }
-
+}
 
 
 // edit
 if (isset($_POST['ubah'])) {
-
     $id = $_POST['id'];
-    $name = $_POST['nama'];
+    $name = $_POST['name'];
     $nis = $_POST['nis'];
     $jenis_kelamin = $_POST['jenis_kelamin'];
     $tempat_lahir = $_POST['tempat_lahir'];
     $tgl_lahir = $_POST['tgl_lahir'];
+    $nama_ortu = $_POST['nama_ortu'];
+    $status = $_POST['status'];
 
-    $ambilDataUser = $koneksi->query("SELECT id_user FROM tb_orang_tua WHERE id = '$id'")->fetch_assoc();
-    $idUser = $ambilDataUser['id_user'];
-   
-    $ubahUser = $koneksi->query("UPDATE tb_user SET name='$name', email='$email',  
-    tingkat='$tingkat' WHERE id = '$idUser' ");
+        $ubahSiswa = $koneksi->query("UPDATE tb_anak SET name='$name', nis='$nis',  
+        jenis_kelamin='$jenis_kelamin', tempat_lahir='$tempat_lahir', tgl_lahir='$tgl_lahir', 
+        nama_ortu='$nama_ortu', status='$status' WHERE id = '" . $id . "' ");
 
-    
-    if ($ubahUser) {
-        $ubahOrtu = $koneksi->query("UPDATE tb_orang_tua SET address='$address', 
-        post_code='$post_code', pekerjaan='$pekerjaan' WHERE id = '$id' ");
-    
-        if ($ubahOrtu) {
+        if ($ubahSiswa) {
             echo "berhasil mengubah siswa";
         } else {
             echo "gagal mengubah siswa";
         }
-    } else {
-        echo "gagal mengubah siswa";
     }
-}
+    

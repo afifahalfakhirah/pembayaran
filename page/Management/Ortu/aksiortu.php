@@ -1,19 +1,17 @@
 <?php
-include "../../../config/koneksi.php"; // salah
+include "../../../config/koneksi.php"; 
 
 if (isset($_POST['hapus'])) {
-    $id = $_POST['id']; // ini id ortu
-    // yang lu hapus id di tb_user
-    // seharusnya pake id user
+    $id = $_POST['id']; 
+    
     $ambilDataUser = $koneksi->query("SELECT id_user FROM tb_orang_tua WHERE id = '$id'")->fetch_assoc();
     $idUser = $ambilDataUser['id_user'];
     $hapusUser = $koneksi->query("DELETE FROM tb_user WHERE id = '" . $idUser . "'");
-    // terdiam wkwkwk saia lgi lihat, seharusnya udah bisa
+
     if ($hapusUser) {
         $hapusOrtu = $koneksi->query("DELETE FROM tb_orang_tua WHERE id_user = '" . $id . "'");
 
-        // 1 Maksudya true
-        // 0 Maksudnya false 
+        
         if ($hapusOrtu) {
             echo 1;
         } else {

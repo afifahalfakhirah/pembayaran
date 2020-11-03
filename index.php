@@ -8,37 +8,6 @@ if (!isset($_SESSION['id'])) {
 $page = $_GET['page'];
 $namaSitus = "Paud Melati";
 $title = "";
-if (!empty($page)) {
-  switch ($page) {
-    case 'Dashboard':
-      $title = "Dashboard - " . $namaSitus;
-      break;
-    case 'managemen-user':
-      $title = "Managemen User - " . $namaSitus;
-      break;
-    case 'managemen-orangtua':
-      $title = "Managemen Orang Tua - " . $namaSitus;
-      break;
-    case 'managemen_siswa':
-      $title = "Management Siswa - " . $namaSitus;
-      break;
-    case 'halaman_orangtua':
-      $title = "Halaman Orang Tua - " . $namaSitus;
-      break;
-    default:
-      $title = "Dashboard - " . $namaSitus;
-      break;
-  }
-} else {
-  $title = "Dashboard - " . $namaSitus;
-}
-
-
-// Ini ambil semua data yang login, cara tahu yang login itu dari id tadi
-
-// ini $Koneksi itu ga tiba2 ada
-//template admin bootstrap
-
 //ambil data login
 $data = $koneksi->query("SELECT * FROM tb_user WHERE id = '" . $_SESSION['id'] . "'")->fetch_assoc();
 
@@ -47,6 +16,50 @@ $data = $koneksi->query("SELECT * FROM tb_user WHERE id = '" . $_SESSION['id'] .
 
 // sekarang tingkatannya
 $tingkat = $data['tingkat'];
+if (!empty($page)) {
+  if ($tingkat == 'admin') {
+    switch ($page) {
+      case 'Dashboard':
+        $title = "Dashboard - " . $namaSitus;
+        break;
+      case 'managemen-user':
+        $title = "Managemen User - " . $namaSitus;
+        break;
+      case 'managemen-orangtua':
+        $title = "Management Orang Tua - " . $namaSitus;
+        break;
+      case 'managemen-siswa':
+        $title = "Management Siswa - " . $namaSitus;
+        break;
+      default:
+        $title = "Dashboard - " . $namaSitus;
+        break;
+    }
+  } else if ($tingkat == 'admin' || $tingkat == 'bendahara') {
+    // switch case buat halaman bendahara
+
+  } else {
+    // nah ini baru si ortu
+    switch ($page) {
+      case 'Dashboard':
+        $title = "Dashboard - " . $namaSitus;
+        break;
+      case 'anak-saia':
+        $title = "Anak Saya - " . $namaSitus;
+        break;
+      default:
+        $title = "Dashboard - " . $namaSitus;
+        break;
+    }
+  }
+} else {
+  $title = "Dashboard - " . $namaSitus;
+}
+
+// Ini ambil semua data yang login, cara tahu yang login itu dari id tadi
+
+// ini $Koneksi itu ga tiba2 ada
+//template admin bootstrap
 
 // Masukin bagian2 tadi
 include('layout/header.php');
@@ -75,69 +88,36 @@ include('layout/header.php');
         <span>Dashboard</span></a>
     </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-    <!-- Heading -->
-    <div class="sidebar-heading">
-      Management
-    </div>
-
-    <!-- Nav Item - Management User -->
-    <li class="nav-item active">
-      <a class="nav-link" href="index.php?page=managemen-user">
-        <i class="fas fa-fw fa-tachmometer-alt"></i>
-        <span>Management User</span></a>
-    </li>
-
-    <!-- Nav Item - Management Siswa -->
-    <li class="nav-item active">
-      <a class="nav-link" href="index.php?page=managemen-orangtua">
-        <i class="fas fa-fw fa-tachmometer-alt"></i>
-        <span>Management Orang Tua</span></a>
-    </li>
-
-    <!-- Nav Item - Management Siswa -->
-    <li class="nav-item active">
-      <a class="nav-link" href="index.php?page=managemen_siswa">
-        <i class="fas fa-fw fa-tachmometer-alt"></i>
-        <span>Management Siswa</span></a>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-    <!-- Heading -->
-    <div class="sidebar-heading">
-      Halaman
-    </div>
-
-    <!-- Nav Item - Halaman Orang Tua -->
-    <li class="nav-item active">
-      <a class="nav-link" href="index.php?page=halaman_orangtua">
-        <i class="fas fa-fw fa-tachmometer-alt"></i>
-        <span>Halaman Orang Tua</span></a>
-    </li>
-
+    <?php
+    if ($tingkat == 'orang tua') {
+    ?>
+      <li class="nav-item active">
+        <a class="nav-link" href="index.php?page=anak-saia">
+          <i class="fas fa-fw fa-tachmometer-alt"></i>
+          <span>Data Anak Saya</span></a>
+      </li>
+    <?php } ?>
 
     <!-- Divider -->
     <hr class="sidebar-divider">
     <!-- misalnya mau umpetin menu Interface -->
-    <?php if ($tingkat == 'admin' or 'bendahara') { ?>
+    <?php if ($tingkat == 'admin') { ?>
       <!-- Heading -->
       <div class="sidebar-heading">
-        Interface
+        Administrator
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-fw fa-cog"></i>
-          <span>Components</span>
+          <span>Manajemen</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="cards.html">Cards</a>
+            <a class="collapse-item" href="index.php?page=managemen-user">Users</a>
+            <a class="collapse-item" href="index.php?page=managemen-orangtua">Orang Tua</a>
+            <a class="collapse-item" href="index.php?page=managemen-siswa">Siswa</a>
           </div>
         </div>
       </li>
@@ -219,35 +199,44 @@ include('layout/header.php');
       <div class="container">
         <?php
         if (!empty($page)) {
-          switch ($page) {
-            case 'dashboard':
-              $title = "dashboard";
-              include "page/dashboard.php";
-              break;
-            case 'managemen-user':
-              include "page/Management/User/ManagementUser.php";
-              break;
-            case 'managemen-orangtua':
-              include "page/Management/Ortu/management_orangtua.php";
-              break;
-            case 'managemen_siswa':
-              include "page/Management/Siswa/management_siswa.php";
-              break;
-            case 'halaman_orangtua':
-              include "page/Halaman/hlmnOrtu.php";
-              break;
-            default:
-              $title = "dashboard";
+          if ($tingkat == 'admin') {
+            switch ($page) {
+              case 'dashboard':
+                $title = "dashboard";
+                include "page/dashboard.php";
+                break;
+              case 'managemen-user':
+                include "page/Management/User/ManagementUser.php";
+                break;
+              case 'managemen-orangtua':
+                include "page/Management/Ortu/management_orangtua.php";
+                break;
+              case 'managemen-siswa':
+                include "page/Management/Siswa/management_siswa.php";
+                break;
+              default:
+                include "page/dashboard.php";
+                break;
+            }
+          } else if ($tingkat == 'admin' || $tingkat == 'bendahara') {
+            // switch case buat halaman bendahara
 
-              include "page/dashboard.php";
-              break;
+          } else {
+            // nah ini baru si ortu
+            switch ($page) {
+              case 'dashboard':
+                break;
+              case 'anak-saia':
+                include "page/OrangTua/anak.php";
+                break;
+              default:
+                include "page/dashboard.php";
+                break;
+            }
           }
         } else {
-          $title = "dashboard";
-
           include "page/dashboard.php";
         }
-
         ?>
       </div>
       <?php

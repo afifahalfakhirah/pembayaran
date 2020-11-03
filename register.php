@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,9 +21,9 @@
   <!-- Custom styles for this template-->
   <link href="assets/css/sb-admin-2.css" rel="stylesheet">
   <style>
-  .card {
-  background: transparent !important;
-  }
+    .card {
+      background: transparent !important;
+    }
   </style>
 
 </head>
@@ -33,7 +36,7 @@
       <div class="card-body p-0">
         <!-- Nested Row within Card Body -->
         <div class="row">
-        <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
           <div class="col-lg-7">
             <div class="p-5">
               <div class="text-center">
@@ -43,56 +46,77 @@
               <!-- Masukkan ke action -->
               <form class="user" action="register_user.php" method="post">
                 <div class="form-group">
-                    <input type="text" name="name" class="form-control form-control-user" id="exampleFirstName" placeholder="Nama">                 
+                  <input type="text" name="name" class="form-control form-control-user" id="exampleFirstName" placeholder="Nama" value="<?php echo isset($_SESSION['name']) ? $_SESSION['name'] : '' ?>">
                 </div>
                 <div class="form-group">
-                    <input type="email" name="email" class="form-control form-control-user" id="exampleLastName" placeholder="Email">
+                  <input type="email" name="email" class="form-control form-control-user <?php echo isset($_SESSION['error_email']) ? 'is-invalid' : '' ?>" id="email" placeholder="Email" value="<?php echo isset($_SESSION['email']) ? $_SESSION['email'] : '' ?>">
+
+                  <?php
+                  // nah di sini dicek
+                  if (isset($_SESSION['error_email'])) {
+                  ?>
+                    <div class="invalid-feedback d-block text-light">
+                      <?php echo $_SESSION['error_email']; ?>
+                    </div>
+                  <?php
+                  }
+                  ?>
                 </div>
                 <div class="form-group">
-                    <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
-                  </div>
+                  <input type="text" name="address" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Alamat" value="<?php echo isset($_SESSION['address']) ? $_SESSION['address'] : '' ?>">
+                </div>
                 <div class="form-group">
-                    <input type="password" name="confirm_password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Confirm Password">
+                  <input type="text" name="post_code" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Post Code" value="<?php echo isset($_SESSION['post_code']) ? $_SESSION['post_code'] : '' ?>">
+                </div>
+                <div class="form-group">
+                  <input type="text" name="pekerjaan" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Pekerjaan" value="<?php echo isset($_SESSION['pekerjaan']) ? $_SESSION['pekerjaan'] : '' ?>">
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" value="<?php echo isset($_SESSION['password']) ? $_SESSION['password'] : '' ?>">
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <input type="text" name="address" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Alamat">
+                  <div class="col-lg">
+                    <div class="form-group">
+                      <input type="password" name="confirm_password" class="form-control form-control-user <?php echo isset($_SESSION['error_password']) ? 'is-invalid' : '' ?>" id="exampleInputPassword" placeholder="Confirm Password" value="<?php echo isset($_SESSION['confirm_password']) ? $_SESSION['confirm_password'] : '' ?>">
+                      <?php
+                      // nah di sini dicek
+                      if (isset($_SESSION['error_password'])) {
+                      ?>
+                        <div class="invalid-feedback d-block text-light">
+                          <?php echo $_SESSION['error_password']; ?>
+                        </div>
+                      <?php
+                      }
+                      ?>
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <input type="text" name="post_code" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Post Code">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" name="pekerjaan" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Pekerjaan">
-                  </div>
+                </div>
                 <button type="submit" name="daftar" class="btn btn-primary btn-user btn-block">
-                    Daftar
+                  Daftar
                 </button>
                 <hr>
               </form>
-              <hr>
-              <div class="text-center">
-                <a class="small" href="forgot-password.html">Forgot Password?</a>
-              </div>
-              <div class="text-center">
-                <a class="small" href="login.html">Already have an account? Login!</a>
-              </div>
             </div>
           </div>
         </div>
+
       </div>
-    </div>
 
-  </div>
+      <!-- Bootstrap core JavaScript-->
+      <script src="assets/vendor/jquery/jquery.min.js"></script>
+      <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="assets/vendor/jquery/jquery.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <!-- Core plugin JavaScript-->
+      <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-  <!-- Core plugin JavaScript-->
-  <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="assets/js/sb-admin-2.min.js"></script>
+      <!-- Custom scripts for all pages-->
+      <script src="assets/js/sb-admin-2.min.js"></script>
 
 </body>
 
 </html>
+<?php
+session_destroy();
+?>

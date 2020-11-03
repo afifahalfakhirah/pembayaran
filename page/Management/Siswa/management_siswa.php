@@ -16,6 +16,7 @@
                         <th>Tempat Lahir</th>
                         <th>Tanggal Lahir</th>
                         <th>Nama OrangTua</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -23,7 +24,7 @@
                     <?php
                     $no = 1;
                     $ambilSiswa = $koneksi->query("SELECT tb_user.name AS nama_ortu, tb_anak.name AS nama_anak,
-                    tb_anak.nis, tb_anak.jenis_kelamin, tb_anak.tempat_lahir, tb_anak.tgl_lahir FROM tb_anak 
+                    tb_anak.nis, tb_anak.jenis_kelamin, tb_anak.tempat_lahir, tb_anak.tgl_lahir, tb_anak.status FROM tb_anak 
                     INNER JOIN tb_user ON tb_anak.id_user = tb_user.id");
                     while ($data = $ambilSiswa->fetch_assoc()) {
                     ?>
@@ -33,8 +34,9 @@
                             <td><?php echo $data['nis'] ?></td>
                             <td><?php echo $data['jenis_kelamin'] ?></td>
                             <td><?php echo $data['tempat_lahir'] ?></td>
-                            <td><?php echo $data['tanggal_lahir'] ?></td>
+                            <td><?php echo $data['tgl_lahir'] ?></td>
                             <td><?php echo $data['nama_ortu'] ?></td>
+                            <td><?php echo $data['status'] ?></td>
                             <td class="text-right">
                                 <div class="btn-group" role="group">
                                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ubahModal-<?php echo $data['id']; ?>">
@@ -75,7 +77,11 @@
                     </div>
                     <div class="form-group">
                         <label>Jenis Kelamin</label>
-                        <input type="text" name="jenis_kelamin" class="form-control">
+                        <select name="jenis_kelamin" class="form-control">
+                            <!-- ternary -->
+                            <option value="L" <?php echo $data['jenis_kelamin'] == 'L' ? 'selected' : '' ?>>L</option>
+                            <option value="P" <?php echo $data['jenis_kelamin'] == 'P' ? 'selected' : '' ?>>P</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Tempat Lahir</label>
@@ -83,11 +89,19 @@
                     </div>
                     <div class="form-group">
                         <label>Tanggal Lahir</label>
-                        <input type="date" name="tanggal_lahir" class="form-control">
+                        <input type="date" name="tgl_lahir" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Nama OrangTua</label>
                         <input type="text" name="nama_ortu" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" class="form-control">
+                            <!-- ternary ni -->
+                            <option value="Pending" <?php echo $data['status'] == 'Pending' ? 'selected' : '' ?>>Pending</option>
+                            <option value="Accepted" <?php echo $data['status'] == 'Accepted' ? 'selected' : '' ?>>Accepted</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -101,9 +115,9 @@
 
 
 <?php
-$sql = $koneksi->query("SELECT tb_user.name, tb_user.email, tb_user.tingkat, tb_orang_tua.address,
-                    tb_orang_tua.post_code, tb_orang_tua.pekerjaan, tb_orang_tua.id FROM tb_orang_tua INNER JOIN tb_user ON tb_orang_tua.id_user = tb_user.id");
-
+$sql = $koneksi->query("SELECT tb_user.name AS nama_ortu, tb_anak.name AS nama_anak,
+tb_anak.nis, tb_anak.jenis_kelamin, tb_anak.tempat_lahir, tb_anak.tgl_lahir, tb_anak.status FROM tb_anak 
+INNER JOIN tb_user ON tb_anak.id_user = tb_user.id");
 while ($data = $sql->fetch_assoc()) {
 ?>
     <div class="modal" tabindex="-1" role="dialog" id="ubahModal-<?php echo $data['id']; ?>">
@@ -121,7 +135,7 @@ while ($data = $sql->fetch_assoc()) {
                         <input type="hidden" name="ubah" value="true">
                         <div class="form-group">
                             <label>Nama</label>
-                            <input type="text" name="nama" class="form-control" value="<?php echo $data['name']; ?>">
+                            <input type="text" name="nama_anak" class="form-control" value="<?php echo $data['nama_anak']; ?>">
                         </div>
                         <div class="form-group">
                             <label>NIS</label>
@@ -129,7 +143,11 @@ while ($data = $sql->fetch_assoc()) {
                         </div>
                         <div class="form-group">
                             <label>Jenis Kelamin</label>
-                            <input type="text" name="jenis_kelamin" class="form-control" value="<?php echo $data['jenis_kelamin']; ?>">
+                            <select name="jenis_kelamin" class="form-control">
+                                <!-- ternary -->
+                                <option value="L" <?php echo $data['jenis_kelamin'] == 'L' ? 'selected' : '' ?>>L</option>
+                                <option value="P" <?php echo $data['jenis_kelamin'] == 'P' ? 'selected' : '' ?>>P</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Tempat Lahir</label>
@@ -140,13 +158,26 @@ while ($data = $sql->fetch_assoc()) {
                             <input type="date" name="tgl_lahir" class="form-control" value="<?php echo $data['tgl_lahir']; ?>">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" name="ubah" class="btn btn-primary">Simpan</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <div class="form-group">
+                        <label>Nama OrangTua</label>
+                        <input type="text" name="nama_ortu" class="form-control" value="<?php echo $data['nama_ortu']; ?>">
                     </div>
-                </form>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" class="form-control">
+                            <!-- ternary ni -->
+                            <option value="Pending" <?php echo $data['status'] == 'Pending' ? 'selected' : '' ?>>Pending</option>
+                            <option value="Accepted" <?php echo $data['status'] == 'Accepted' ? 'selected' : '' ?>>Accepted</option>
+                        </select>
+                    </div>
             </div>
+            <div class="modal-footer">
+                <button type="submit" name="ubah" class="btn btn-primary">Simpan</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+            </form>
         </div>
+    </div>
     </div>
 <?php
 }
@@ -154,8 +185,9 @@ while ($data = $sql->fetch_assoc()) {
 
 
 <script>
+    // tambah data
     $('#tambahForm').submit(function(e) {
-        e.preventDefault(); 
+        e.preventDefault();
         let form = $(this)
         // baru ajaxnya
         $.ajax({
@@ -163,39 +195,36 @@ while ($data = $sql->fetch_assoc()) {
             url: "page/Management/Siswa/aksisiswa.php",
             data: form.serialize(),
             success(hasil) {
-                if (hasil.includes("Email") || hasil.includes("Gagal")) {
-                    alert(hasil);
-                } else {
-                    location.reload();
-                    alert(hasil);
-                }
+                location.reload();
+                alert(hasil);
             }
         })
-    })
+    });
 
-    // coba idenya stackoverflow
+
     $('form[id^="ubahForm"]').each(function() {
         $(this).submit(function(e) {
-            e.preventDefault(); 
+            e.preventDefault();
             let form = $(this)
-           
+
             $.ajax({
                 type: "POST",
                 url: "page/Management/Siswa/aksisiswa.php",
                 data: form.serialize(),
                 success(hasil) {
-                   location.reload();
-                   alert(hasil);
+                    location.reload();
+                    alert(hasil);
                 }
             })
         });
     });
 
 
+    // hapus
     async function hapusUser(nama, id) {
         let hapus = confirm(`Hapus ${nama}?`);
         if (hapus) {
-            // Bikin query buat hapus di sini
+            // Bikin query buat hapus 
             await $.ajax({
                 type: "POST",
                 url: "page/Management/Siswa/aksisiswa.php",
@@ -214,4 +243,3 @@ while ($data = $sql->fetch_assoc()) {
             })
         }
     }
-</script>
