@@ -36,6 +36,7 @@
                             <td><?php echo $data['tingkat'] ?></td>
                             <td class="text-right">
                                 <div class="btn-group" role="group">
+                                    <a href="index.php?page=managemen-orangtua&aksi=lihat&id=<?php echo $data['id'];?>" class="btn btn-info">Lihat Data</a>
                                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#gantiPassword-<?php echo $data['id']; ?>">
                                         <i class="fas fa-edit"></i> Ganti Password
                                     </button>

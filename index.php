@@ -6,6 +6,7 @@ if (!isset($_SESSION['id'])) {
   return header("location: login.php");
 }
 $page = $_GET['page'];
+$aksi = $_GET['aksi'];
 $namaSitus = "Paud Melati";
 $title = "";
 //ambil data login
@@ -84,9 +85,10 @@ include('layout/header.php');
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
       <a class="nav-link" href="index.php">
-        <i class="fas fa-fw fa-tachmometer-alt"></i>
+        <i class="fas fa-tachometer-alt"></i>
         <span>Dashboard</span></a>
     </li>
+
 
     <?php
     if ($tingkat == 'orang tua') {
@@ -94,6 +96,11 @@ include('layout/header.php');
       <li class="nav-item active">
         <a class="nav-link" href="index.php?page=anak-saia">
           <i class="fas fa-fw fa-tachmometer-alt"></i>
+          <span>Berita</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="index.php?page=anak-saia">
+          <i class="fas fa-tachometer-alt"></i>
           <span>Data Anak Saya</span></a>
       </li>
     <?php } ?>
@@ -101,7 +108,7 @@ include('layout/header.php');
     <!-- Divider -->
     <hr class="sidebar-divider">
     <!-- misalnya mau umpetin menu Interface -->
-    <?php if ($tingkat == 'admin') { ?>
+    <?php if ($tingkat == 'admin' || $tingkat == 'bendahara') { ?>
       <!-- Heading -->
       <div class="sidebar-heading">
         Administrator
@@ -115,12 +122,21 @@ include('layout/header.php');
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="index.php?page=managemen-user">Users</a>
-            <a class="collapse-item" href="index.php?page=managemen-orangtua">Orang Tua</a>
+            <?php if ($tingkat == 'admin') {
+            ?>
+              <a class="collapse-item" href="index.php?page=managemen-user">Users</a>
+              <a class="collapse-item" href="index.php?page=managemen-orangtua">Orang Tua</a>
+            <?php } ?>
             <a class="collapse-item" href="index.php?page=managemen-siswa">Siswa</a>
           </div>
         </div>
       </li>
+       <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+      <a class="nav-link" href="index.php?page=tahun-ajaran">
+      <i class="fas fa-graduation-cap"></i>
+        <span>Tahun Ajaran</span></a>
+    </li>
     <?php } ?>
 
   </ul>
@@ -209,10 +225,17 @@ include('layout/header.php');
                 include "page/Management/User/ManagementUser.php";
                 break;
               case 'managemen-orangtua':
-                include "page/Management/Ortu/management_orangtua.php";
+                if ($aksi == 'lihat'){
+                  include "page/Management/Ortu/Aksi/lihat.php";
+                }else {
+                  include "page/Management/Ortu/management_orangtua.php";
+                }
                 break;
               case 'managemen-siswa':
                 include "page/Management/Siswa/management_siswa.php";
+                break;
+              case 'tahun-ajaran':
+                include "page/TahunAjaran/tahunajaran.php";
                 break;
               default:
                 include "page/dashboard.php";
@@ -220,14 +243,27 @@ include('layout/header.php');
             }
           } else if ($tingkat == 'admin' || $tingkat == 'bendahara') {
             // switch case buat halaman bendahara
-
+            switch ($page) {
+              case 'managemen-siswa':
+                include "page/Management/Siswa/management_siswa.php";
+                break;
+              default:
+                include "page/dashboard.php";
+                break;
+            }
           } else {
             // nah ini baru si ortu
             switch ($page) {
               case 'dashboard':
                 break;
               case 'anak-saia':
-                include "page/OrangTua/anak.php";
+                if ($aksi == 'lihat'){
+                  include "page/OrangTua/Aksi/lihat.php";
+                }else if ($aksi == 'rincian'){
+                  include "page/OrangTua/Aksi/rincian.php";
+                }else {
+                  include "page/OrangTua/anak.php";
+                }
                 break;
               default:
                 include "page/dashboard.php";

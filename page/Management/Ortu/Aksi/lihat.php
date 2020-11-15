@@ -1,57 +1,91 @@
-<div class="card shadow mb-4">
+<?php
+$id = $_GET['id'];
+
+$sql = $koneksi->query("SELECT tb_user.name, tb_user.email, tb_user.tingkat, tb_orang_tua.address,
+                    tb_orang_tua.post_code, tb_orang_tua.pekerjaan, tb_orang_tua.id_user FROM tb_orang_tua INNER JOIN tb_user ON tb_orang_tua.id_user = tb_user.id
+                    WHERE tb_orang_tua.id = $id");
+$dataOrtu = $sql->fetch_assoc();
+$id_user = $dataOrtu['id_user'];
+
+$sqlAnak  = $koneksi->query("SELECT * FROM tb_anak WHERE id_user = $id_user");
+?>
+
+<h5> Data Diri </h5>
+<div class="card">
     <div class="card-body">
-        <div class="card-header py-3 mb-3">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tambahModal">
-                Tambah Data
-            </button>
-        </div>
-        <div class="table-responsive">
-            <table id="dataTable" class="table table-bordered table-striped" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Siswa</th>
-                        <th>NIS</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Tempat Lahir</th>
-                        <th>Tanggal Lahir</th>
-                        <th>Nama OrangTua</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $no = 1;
-                    $ambilSiswa = $koneksi->query("SELECT tb_user.name AS nama_ortu, tb_anak.name AS nama_anak,
-                    tb_anak.nis, tb_anak.jenis_kelamin, tb_anak.tempat_lahir, tb_anak.tgl_lahir FROM tb_anak 
-                    INNER JOIN tb_user ON tb_anak.id_user = tb_user.id");
-                    while ($data = $ambilSiswa->fetch_assoc()) {
-                    ?>
-                        <tr>
-                            <td><?php echo $no++ ?></td>
-                            <td><?php echo $data['nama_anak'] ?></td>
-                            <td><?php echo $data['nis'] ?></td>
-                            <td><?php echo $data['jenis_kelamin'] ?></td>
-                            <td><?php echo $data['tempat_lahir'] ?></td>
-                            <td><?php echo $data['tgl_lahir'] ?></td>
-                            <td><?php echo $data['nama_ortu'] ?></td>
-                            <td class="text-right">
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ubahModal-<?php echo $data['id']; ?>">
-                                        <i class="fas fa-edit"></i> Ubah
-                                    </button>
-                                    <button type="button" class="btn btn-danger" id="hapus" data-nama="<?php echo $data['name']; ?>" data-id="<?php echo $data['id']; ?>" onclick="hapusUser(this.getAttribute('data-nama'), this.getAttribute('data-id'))">
-                                        <i class="fas fa-trash"></i> Hapus
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-        </div>
+        <table class="table table-striped">
+            <tr>
+                <th width="30%"><strong>Nama</strong></th>
+                <td><?php echo $dataOrtu['name']; ?></td>
+            </tr>
+            <tr>
+                <th width="30%"><strong>Email</strong></th>
+                <td><?php echo $dataOrtu['email']; ?></td>
+            </tr>
+            <tr>
+                <th width="30%"><strong>Alamat</strong></th>
+                <td><?php echo $dataOrtu['address']; ?></td>
+            </tr>
+            <tr>
+                <th width="30%"><strong>Post Code</strong></th>
+                <td><?php echo $dataOrtu['post_code']; ?></td>
+            </tr>
+            <tr>
+                <th width="30%"><strong>Pekerjaan</strong></th>
+                <td><?php echo $dataOrtu['pekerjaan']; ?></td>
+            </tr>
+        </table>
     </div>
 </div>
+
+<h5 class="pt-3">Data anak</h5>
+<div class="pb-4">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tambahModal">
+        Tambah Data
+    </button>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                No
+            </th>
+            <th>
+                Nama
+            </th>
+            <th>NIS</th>
+            <th>Jenis Kelamin</th>
+            <th>Tempat Lahir</th>
+            <th>Tanggal Lahir</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $no = 1;
+        while ($anak = $sqlAnak->fetch_assoc()) {
+        ?>
+            <tr>
+                <td><?php echo $no++; ?>
+                <td><?php echo $anak['name']; ?>
+                <td><?php echo $anak['nis']; ?>
+                <td><?php echo $anak['jenis_kelamin']; ?>
+                <td><?php echo $anak['tempat_lahir']; ?>
+                <td><?php echo $anak['tgl_lahir']; ?>
+                <td>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ubahModal-<?php echo $anak['id']; ?>">
+                        <i class="fas fa-edit"></i> Ubah
+                    </button>
+                    <button type="button" class="btn btn-danger" id="hapus" data-nama="<?php echo $anak['name']; ?>" data-id="<?php echo $anak['id']; ?>" onclick="hapusUser(this.getAttribute('data-nama'), this.getAttribute('data-id'))">
+                        <i class="fas fa-trash"></i> Hapus
+                    </button>
+                </td>
+            </tr>
+        <?php
+        }
+        ?>
+    </tbody>
+</table>
 
 <div class="modal" tabindex="-1" role="dialog" id="tambahModal">
     <div class="modal-dialog" role="document">
@@ -64,10 +98,11 @@
             </div>
             <form id="tambahForm" method="POST">
                 <div class="modal-body">
+                    <input type="hidden" name="id_user" value="<?php echo $id_user; ?>">
                     <input type="hidden" name="tambah" value="true">
                     <div class="form-group">
                         <label>Nama Siswa</label>
-                        <input type="text" name="nama_anak" class="form-control">
+                        <input type="text" name="name" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>NIS</label>
@@ -101,10 +136,8 @@
 
 
 <?php
-$sql = $koneksi->query("SELECT tb_user.name AS nama_ortu, tb_anak.name AS nama_anak,
-tb_anak.nis, tb_anak.jenis_kelamin, tb_anak.tempat_lahir, tb_anak.tgl_lahir FROM tb_anak 
-INNER JOIN tb_user ON tb_anak.id_user = tb_user.id");
-while ($data = $sql->fetch_assoc()) {
+$sql2 = $koneksi->query("SELECT * FROM tb_anak WHERE id_user = $id_user");
+while ($data = $sql2->fetch_assoc()) {
 ?>
     <div class="modal" tabindex="-1" role="dialog" id="ubahModal-<?php echo $data['id']; ?>">
         <div class="modal-dialog" role="document">
@@ -121,7 +154,7 @@ while ($data = $sql->fetch_assoc()) {
                         <input type="hidden" name="ubah" value="true">
                         <div class="form-group">
                             <label>Nama</label>
-                            <input type="text" name="nama_anak" class="form-control" value="<?php echo $data['nama_anak']; ?>">
+                            <input type="text" name="name" class="form-control" value="<?php echo $data['name']; ?>">
                         </div>
                         <div class="form-group">
                             <label>NIS</label>
@@ -143,10 +176,6 @@ while ($data = $sql->fetch_assoc()) {
                             <label>Tanggal Lahir</label>
                             <input type="date" name="tgl_lahir" class="form-control" value="<?php echo $data['tgl_lahir']; ?>">
                         </div>
-                        <div class="form-group">
-                            <label>Nama OrangTua</label>
-                            <input type="text" name="nama_ortu" class="form-control" value="<?php echo $data['nama_ortu']; ?>">
-                        </div>
                     </div>
 
                     <div class="modal-footer">
@@ -157,17 +186,32 @@ while ($data = $sql->fetch_assoc()) {
             </div>
         </div>
     </div>
-    <?php
+<?php
 }
-    ?>
+?>
+
+<script>
+    $('#tambahForm').submit(function(e) {
+        e.preventDefault();
+        let form = $(this)
+        // baru ajaxnya
+        $.ajax({
+            type: "POST",
+            url: "page/Management/Siswa/aksisiswa.php",
+            data: form.serialize(),
+            success(hasil) {
+                location.reload();
+                alert(hasil);
+            }
+        })
+    });
 
 
-    <script>
-        // tambah data
-        $('#tambahForm').submit(function(e) {
+    $('form[id^="ubahForm"]').each(function() {
+        $(this).submit(function(e) {
             e.preventDefault();
             let form = $(this)
-            // baru ajaxnya
+
             $.ajax({
                 type: "POST",
                 url: "page/Management/Siswa/aksisiswa.php",
@@ -178,47 +222,24 @@ while ($data = $sql->fetch_assoc()) {
                 }
             })
         });
+    });
 
-
-        $('form[id^="ubahForm"]').each(function() {
-            $(this).submit(function(e) {
-                e.preventDefault();
-                let form = $(this)
-
-                $.ajax({
-                    type: "POST",
-                    url: "page/Management/Siswa/aksisiswa.php",
-                    data: form.serialize(),
-                    success(hasil) {
-                        location.reload();
-                        alert(hasil);
-                    }
-                })
-            });
-        });
-
-
-        // hapus
-        async function hapusUser(nama, id) {
-            let hapus = confirm(`Hapus ${nama}?`);
-            if (hapus) {
-                // Bikin query buat hapus 
-                await $.ajax({
-                    type: "POST",
-                    url: "page/Management/Siswa/aksisiswa.php",
-                    data: {
-                        hapus: true,
-                        id: id
-                    },
-                    success(hasil) {
-                        if (hasil == 1) {
-                            alert(`${nama} berhasil dihapus!`);
-                            location.reload();
-                        } else {
-                            alert(`${nama} gagal dihapus!`);
-                        }
-                    }
-                })
-            }
+    async function hapusUser(nama, id) {
+        let hapus = confirm(`Hapus ${nama}?`);
+        if (hapus) {
+            // Bikin query buat hapus 
+            await $.ajax({
+                type: "POST",
+                url: "page/Management/Siswa/aksisiswa.php",
+                data: {
+                    hapus: true,
+                    id: id
+                },
+                success(hasil) {
+                    alert(hasil);
+                    location.reload();
+                }
+            })
         }
-    </script>
+    }
+</script>
