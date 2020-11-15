@@ -38,7 +38,24 @@ if (!empty($page)) {
     }
   } else if ($tingkat == 'admin' || $tingkat == 'bendahara') {
     // switch case buat halaman bendahara
-
+    switch ($page) {
+      case 'managemen-siswa':
+        $title = "Manajemen Siswa - " . $namaSitus;
+        break;
+      case 'tahun-ajaran':
+        $title = "Tahun Ajaran - " . $namaSitus;
+        break;
+      case 'transaksi':
+        if ($aksi == 'rincian') {
+          $title = "Rincian Transaksi - " . $namaSitus;
+        } else {
+          $title = "Transaksi - " . $namaSitus;
+        }
+        break;
+      default:
+        include "page/dashboard.php";
+        break;
+    }
   } else {
     // nah ini baru si ortu
     switch ($page) {
@@ -131,12 +148,17 @@ include('layout/header.php');
           </div>
         </div>
       </li>
-       <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
-      <a class="nav-link" href="index.php?page=tahun-ajaran">
-      <i class="fas fa-graduation-cap"></i>
-        <span>Tahun Ajaran</span></a>
-    </li>
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="index.php?page=tahun-ajaran">
+          <i class="fas fa-graduation-cap"></i>
+          <span>Tahun Ajaran</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="index.php?page=transaksi">
+          <i class="fas fa-money-check-alt"></i>
+          <span>Transaksi</span></a>
+      </li>
     <?php } ?>
 
   </ul>
@@ -225,9 +247,9 @@ include('layout/header.php');
                 include "page/Management/User/ManagementUser.php";
                 break;
               case 'managemen-orangtua':
-                if ($aksi == 'lihat'){
+                if ($aksi == 'lihat') {
                   include "page/Management/Ortu/Aksi/lihat.php";
-                }else {
+                } else {
                   include "page/Management/Ortu/management_orangtua.php";
                 }
                 break;
@@ -236,6 +258,13 @@ include('layout/header.php');
                 break;
               case 'tahun-ajaran':
                 include "page/TahunAjaran/tahunajaran.php";
+                break;
+              case 'transaksi':
+                if ($aksi == 'rincian') {
+                  include "page/Bendahara/rincian.php";
+                } else {
+                  include "page/Bendahara/transaksi.php";
+                }
                 break;
               default:
                 include "page/dashboard.php";
@@ -247,6 +276,16 @@ include('layout/header.php');
               case 'managemen-siswa':
                 include "page/Management/Siswa/management_siswa.php";
                 break;
+              case 'tahun-ajaran':
+                include "page/TahunAjaran/tahunajaran.php";
+                break;
+              case 'transaksi':
+                if ($aksi == 'rincian') {
+                  include "page/Bendahara/rincian.php";
+                } else {
+                  include "page/Bendahara/transaksi.php";
+                }
+                break;
               default:
                 include "page/dashboard.php";
                 break;
@@ -257,11 +296,11 @@ include('layout/header.php');
               case 'dashboard':
                 break;
               case 'anak-saia':
-                if ($aksi == 'lihat'){
+                if ($aksi == 'lihat') {
                   include "page/OrangTua/Aksi/lihat.php";
-                }else if ($aksi == 'rincian'){
+                } else if ($aksi == 'rincian') {
                   include "page/OrangTua/Aksi/rincian.php";
-                }else {
+                } else {
                   include "page/OrangTua/anak.php";
                 }
                 break;
