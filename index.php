@@ -96,8 +96,10 @@ include('layout/header.php');
       <div class="sidebar-brand-text mx-4">PAUD MELATI <sup></sup></div>
     </a>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider my-0">
+    <div class="sidebar-heading text-center text-light">
+      <?= $tingkat; ?>
+    </div>
+
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
@@ -106,6 +108,7 @@ include('layout/header.php');
         <span>Dashboard</span></a>
     </li>
 
+   
 
     <?php
     if ($tingkat == 'orang tua') {

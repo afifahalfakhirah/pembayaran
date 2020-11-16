@@ -2,11 +2,10 @@
 <div class="card mt-3 mb-3">
     <div class="card-body">
         <table class="table table-striped">
-            <!-- Gini aja, skrng lu pakein data bener pake query maksudnya -->
             <?php
             $id = $_GET['id'];
 
-            $sql = $koneksi->query("SELECT tb_anak.name, tb_anak.nis, tb_tahun_ajaran.nama, tb_pembayaran.date, tb_pembayaran.total FROM tb_pembayaran
+            $sql = $koneksi->query("SELECT tb_anak.name, tb_anak.nis, tb_tahun_ajaran.nama, tb_pembayaran.date, tb_pembayaran.total, tb_pembayaran.status FROM tb_pembayaran
             INNER JOIN tb_anak ON tb_anak.id = tb_pembayaran.id_anak 
             INNER JOIN tb_tahun_ajaran ON tb_tahun_ajaran.id = tb_pembayaran.id_tahun_ajaran
             WHERE tb_pembayaran.id = $id");
@@ -33,14 +32,18 @@
                 <th width="30%"><strong>Total</strong></th>
                 <td><?php echo $dataAnak['total']; ?></td>
             </tr>
+            <tr>
+                <th width="30%"><strong>Status</strong></th>
+                <td><?php echo $dataAnak['status']; ?></td>
+            </tr>
         </table>
     </div>
 </div>
 
 <?php
 
-    $sql2 = $koneksi->query("SELECT * FROM tb_bukti_pembayaran WHERE id_pembayaran = $id");
-    $pembayaran = $sql2->fetch_assoc();
+$sql2 = $koneksi->query("SELECT * FROM tb_bukti_pembayaran WHERE id_pembayaran = $id");
+$pembayaran = $sql2->fetch_assoc();
 
 ?>
 
@@ -52,11 +55,11 @@
                 <div class="col-lg">
                     <div class="form-group">
                         <label>Nama Pengirim</label>
-                        <input type="text" name="nama_pengirim" class="form-control" value="<?= $pembayaran['nama_pengirim']; ?>">
+                        <input type="text" name="nama_pengirim" class="form-control" value="<?= $pembayaran['nama_pengirim']; ?>" <?= ($dataAnak['status'] == 'Belum bayar' || $dataAnak['status'] == 'Menunggu verifikasi') ? '' : 'disabled' ?>>
                     </div>
                     <div class="form-group">
                         <label>Nama Bank</label>
-                        <select name="bank_pengirim" id="" class="form-control">
+                        <select name="bank_pengirim" id="" class="form-control" <?= ($dataAnak['status'] == 'Belum bayar' || $dataAnak['status'] == 'Menunggu verifikasi') ? '' : 'disabled' ?>>
                             <option value="BNI" <?= $pembayaran['bank_pengirim'] == 'BNI' ? 'selected' : '' ?>>BNI</option>
                             <option value="BCA" <?= $pembayaran['bank_pengirim'] == 'BCA' ? 'selected' : '' ?>>BCA</option>
                             <option value="BJB" <?= $pembayaran['bank_pengirim'] == 'BJB' ? 'selected' : '' ?>>BJB</option>
@@ -64,16 +67,15 @@
                     </div>
                     <div class="form-group">
                         <label>Nomor Rekening</label>
-                        <input type="number" name="no_rek_pengirim" class="form-control" value="<?= $pembayaran['no_rek_pengirim']; ?>">
+                        <input type="number" name="no_rek_pengirim" class="form-control" value="<?= $pembayaran['no_rek_pengirim']; ?>" <?= ($dataAnak['status'] == 'Belum bayar' || $dataAnak['status'] == 'Menunggu verifikasi') ? '' : 'disabled' ?>>
                     </div>
                     <div class="form-group">
                         <label>Rekening Tujuan</label>
-                        <select name="id_rekening_tujuan" class="form-control">
+                        <select name="id_rekening_tujuan" class="form-control" <?= ($dataAnak['status'] == 'Belum bayar' || $dataAnak['status'] == 'Menunggu verifikasi') ? '' : 'disabled' ?>>
                             <?php
                             $sqlRekening = $koneksi->query("SELECT * FROM tb_rekening");
                             while ($rekening = $sqlRekening->fetch_assoc()) { ?>
                                 <option value="<?= $rekening['id'] ?>" <?= $pembayaran['rekening_tujuan'] == $rekening['id'] ? 'selected' : '' ?>><?= $rekening['nama_bank'] ?> a/n <?= $rekening['nama_pemilik_rek'] ?> - <?= $rekening['no_rek'] ?></option>
-
                             <?php } ?>
                         </select>
                     </div>
@@ -81,15 +83,17 @@
                 <div class="col-lg">
                     <div class="form-group">
                         <label>Upload Struk</label>
-                        <input type="file" name="struk" id="struk" class="form-control-file">
+                        <input type="file" name="struk" id="struk" class="form-control-file" <?= ($dataAnak['status'] == 'Belum bayar' || $dataAnak['status'] == 'Menunggu verifikasi') ? '' : 'disabled' ?>>
                     </div>
-
-                    <img id="preview" src="<?= "upload/" . $pembayaran['struk_transfer'] ?>" alt="your image" width="300" height="300" />
+                    <img id="preview" src="<?= "upload/" . $pembayaran['struk_transfer'] ?>" alt="Struk" width="300" height="300" onerror="this.style.display='none'" />
                 </div>
             </div>
-            <div class="text-right">
-                <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
-            </div>
+            <?php if ($dataAnak['status'] == 'Belum bayar' || $dataAnak['status'] == 'Menunggu verifikasi') { ?>
+                
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
+                </div>
+            <?php } ?>
         </form>
     </div>
 </div>
@@ -101,6 +105,7 @@
 
             reader.onload = function(e) {
                 $('#preview').attr('src', e.target.result);
+                $('#preview').css("display","block")
             }
 
             reader.readAsDataURL(input.files[0]);
@@ -140,9 +145,9 @@ if (isset($_POST['simpan'])) {
 
             $updateStatusPembayaran = $koneksi->query("UPDATE tb_pembayaran SET status = 'Menunggu verifikasi', bukti_pembayaran = $id_bukti_pembayaran WHERE id = $id");
 
-            if ($updateStatusPembayaran){
+            if ($updateStatusPembayaran) {
                 echo "Berhasil menyimpan";
-            }else {
+            } else {
                 echo "Gagal menyimpan";
             }
         } else {

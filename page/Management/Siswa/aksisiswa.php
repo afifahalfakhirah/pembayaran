@@ -61,37 +61,6 @@ if (isset($_POST['tambah'])) {
     }
 }
 
-// apa niii lanjuin yg tadi mlmm, udh dpt logikanya? blom wkwkwwkwk
-// yaudah jangan ke sana dulu lantasss
-// skrng ke ortu itu, buat klik bayar sama ngirim struknya bagaimanaa
-
-
-/*
-    Bikin tabel lagi
-    tabel rekening atau tabel bank gitu
-    isinya bank yang tersedia di sekolahnya buat transfer uangnya
-    truss
-
-    bikin ini di bawah ini save nya manadah id dulu jd prmary key apalagi dah
-
-    -   id
-    -   id_pembayaran
-    -   id_rekening
-    -   nama_pengirim
-    -   no_rekening_pengirim
-    -   bank_pengirim
-    -   struk_transfer => ini jadi varchar isinya nama file gambarnya yg sruk diisi apa? udah
-
-    Trus buat tabel lagi bukti pembayaran
-    isinya nama pengirim, dsb... sama struknya
-    nah, id dari tabel tsb dimasukin ke tb_pembayaran bagian bukti pembayaran
-    jd foreign key ini namenya isinya misal bri gitu?
-
-    Nama bank, nama pemilik rekeningnya, no rekeningnya udh gitu? id nya mana?
-    masa ga ada primary key hmmmmmm berari id_pemabyaran? id aja gitu? no reknya varchar udh trus
-
-
-*/
 
 // edit
 if (isset($_POST['ubah'])) {

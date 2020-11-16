@@ -2,7 +2,6 @@
 <div class="card mt-3 mb-3">
     <div class="card-body">
         <table class="table table-striped">
-            <!-- Gini aja, skrng lu pakein data bener pake query maksudnya -->
             <?php
             $id = $_GET['id'];
 

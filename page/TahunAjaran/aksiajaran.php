@@ -25,15 +25,6 @@ if (isset($_POST['getDataByID'])) {
     }
     echo json_encode($dataAjaran);
 }
-// Kan mau edit data
-// sebeluum edit data kan mau nampilin isi datanya ya
-// berarti lu harus buat php getData lagi
-// cuma isinya berdasarkan ID hmmmm
-
-// ketik aja lac
-// ini tahun ajaran buat bedain harga yang dibayar
-// kata lu tiap tahun ajaran bisa beda harganya iya
-// trus dari database bjir
 
 // tambah anak
 if (isset($_POST['tambah'])) {

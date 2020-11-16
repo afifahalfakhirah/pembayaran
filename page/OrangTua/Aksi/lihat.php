@@ -45,8 +45,6 @@ $queryPembayaran = $koneksi->query("SELECT p.id, p.date, t.nama, t.bayaran, p.st
         <?php
         $no = 1;
         while ($data = $queryPembayaran->fetch_assoc()) {
-            // coba login jd ortu itu
-            // skrng bikin halaman rinciannya berarti tambah php lagi? bisa voice chat ga? bisa
         ?>
             <tr>
                 <td><?= $no++; ?></td>
