@@ -198,7 +198,7 @@ while ($data = $sql->fetch_assoc()) {
     $('#tambahForm').submit(function(e) {
         e.preventDefault(); 
         let form = $(this)
-        // baru ajaxnya
+        
         $.ajax({
             type: "POST",
             url: "page/Management/Ortu/aksiortu.php",
@@ -214,7 +214,7 @@ while ($data = $sql->fetch_assoc()) {
         })
     })
 
-    // coba idenya stackoverflow, edit
+    // edit
     $('form[id^="ubahForm"]').each(function() {
         $(this).submit(function(e) {
             e.preventDefault(); 
@@ -255,7 +255,7 @@ while ($data = $sql->fetch_assoc()) {
     async function hapusUser(nama, id) {
         let hapus = confirm(`Hapus ${nama}?`);
         if (hapus) {
-            // Bikin query buat hapus 
+          
             await $.ajax({
                 type: "POST",
                 url: "page/Management/Ortu/aksiortu.php",
@@ -264,12 +264,8 @@ while ($data = $sql->fetch_assoc()) {
                     id: id
                 },
                 success(hasil) {
-                    if (hasil == 1) {
-                        alert(`${nama} berhasil dihapus!`);
-                        location.reload();
-                    } else {
-                        alert(`${nama} gagal dihapus!`);
-                    }
+                        alert(hasil);
+                    window.location.href = "index.php?page=managemen-orangtua";
                 }
             })
         }

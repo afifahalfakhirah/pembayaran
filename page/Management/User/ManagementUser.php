@@ -180,7 +180,6 @@
         e.preventDefault(); 
         let form = $(this)
 
-        // baru ajaxnya
         $.ajax({
             type: "POST",
             url: "page/Management/User/aksi.php",
@@ -196,12 +195,12 @@
         })
     })
 
-    // coba idenya stackoverflow
+    // edit
     $('form[id^="ubahForm"]').each(function () {
     $(this).submit(function(e) {
         e.preventDefault(); 
         let form = $(this)
-        // baru ajaxnya
+      
         $.ajax({
             type: "POST",
             url: "page/Management/User/aksi.php",
@@ -224,7 +223,6 @@ $('form[id^="gantiPassword"]').each(function () {
         e.preventDefault(); 
         let form = $(this)
         
-        // baru ajaxnya
         $.ajax({
             type: "POST",
             url: "page/Management/User/aksi.php",
@@ -243,8 +241,7 @@ $('form[id^="gantiPassword"]').each(function () {
 
     async function hapusUser(nama, id) {
         let hapus = confirm(`Hapus ${nama}?`);
-        if (hapus) {
-            // Bikin query 
+        if (hapus) { 
             await $.ajax({
                 type: "POST",
                 url: "page/Management/User/aksi.php",

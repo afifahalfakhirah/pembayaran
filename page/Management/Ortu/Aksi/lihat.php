@@ -57,6 +57,7 @@ $sqlAnak  = $koneksi->query("SELECT * FROM tb_anak WHERE id_user = $id_user");
             <th>Jenis Kelamin</th>
             <th>Tempat Lahir</th>
             <th>Tanggal Lahir</th>
+            <th>Status</th>
             <th>Aksi</th>
         </tr>
     </thead>
@@ -72,6 +73,7 @@ $sqlAnak  = $koneksi->query("SELECT * FROM tb_anak WHERE id_user = $id_user");
                 <td><?php echo $anak['jenis_kelamin']; ?>
                 <td><?php echo $anak['tempat_lahir']; ?>
                 <td><?php echo $anak['tgl_lahir']; ?>
+                <td><?php echo $anak['status']; ?>
                 <td>
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ubahModal-<?php echo $anak['id']; ?>">
                         <i class="fas fa-edit"></i> Ubah
@@ -123,6 +125,14 @@ $sqlAnak  = $koneksi->query("SELECT * FROM tb_anak WHERE id_user = $id_user");
                     <div class="form-group">
                         <label>Tanggal Lahir</label>
                         <input type="date" name="tgl_lahir" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" class="form-control">
+                            <!-- ternary -->
+                            <option value="Aktif" <?php echo $data['status'] == 'Aktif' ? 'selected' : '' ?>>Aktif</option>
+                            <option value="Nonaktif" <?php echo $data['status'] == 'Nonaktif' ? 'selected' : '' ?>>Nonaktif</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -176,6 +186,13 @@ while ($data = $sql2->fetch_assoc()) {
                             <label>Tanggal Lahir</label>
                             <input type="date" name="tgl_lahir" class="form-control" value="<?php echo $data['tgl_lahir']; ?>">
                         </div>
+                        <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" class="form-control">
+                            <option value="Aktif" <?php echo $data['status'] == 'Aktif' ? 'selected' : '' ?>>Aktif</option>
+                            <option value="Nonaktif" <?php echo $data['status'] == 'Nonaktif' ? 'selected' : '' ?>>Nonaktif</option>
+                        </select>
+                    </div>
                     </div>
 
                     <div class="modal-footer">
@@ -194,7 +211,7 @@ while ($data = $sql2->fetch_assoc()) {
     $('#tambahForm').submit(function(e) {
         e.preventDefault();
         let form = $(this)
-        // baru ajaxnya
+    
         $.ajax({
             type: "POST",
             url: "page/Management/Siswa/aksisiswa.php",
@@ -227,7 +244,7 @@ while ($data = $sql2->fetch_assoc()) {
     async function hapusUser(nama, id) {
         let hapus = confirm(`Hapus ${nama}?`);
         if (hapus) {
-            // Bikin query buat hapus 
+            
             await $.ajax({
                 type: "POST",
                 url: "page/Management/Siswa/aksisiswa.php",

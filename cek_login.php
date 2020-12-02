@@ -6,15 +6,15 @@ if(isset($_POST['masuk'])){
     $email = mysqli_real_escape_string($koneksi, trim($_POST['email']));
     $password = mysqli_real_escape_string($koneksi, trim($_POST['password']));
 
-    // Ini query mysqlnya
+    //query mysqlnya
     $cekUser = $koneksi->query("SELECT * FROM tb_user WHERE (email = '".$email."')");
 
-    // cek ada data berdasarkan email apa tidak
+    // cek ada data berdasarkan email ada apa tidak
     $data = $cekUser->num_rows;
 
     if ($data > 0){
         // Kalo ada emailnya, baru cek passwordnya
-        // Hash passwordnya pake md5 lalu cocokin
+        // Hash passwordnya pake md5 lalu dicocokan
         $row = $cekUser->fetch_assoc();
 
         if (md5($password) == $row['password']){
@@ -28,8 +28,6 @@ if(isset($_POST['masuk'])){
         }else{
             echo "password beda";
         }
-
-        // echo "tidak ada emailnya";
     }else {
         echo "tidak ada";
     }

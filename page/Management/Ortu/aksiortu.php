@@ -1,24 +1,27 @@
 <?php
-include "../../../config/koneksi.php"; 
+include "../../../config/koneksi.php";
 
 if (isset($_POST['hapus'])) {
-    $id = $_POST['id']; 
-    
-    $ambilDataUser = $koneksi->query("SELECT id_user FROM tb_orang_tua WHERE id = '$id'")->fetch_assoc();
-    $idUser = $ambilDataUser['id_user'];
-    $hapusUser = $koneksi->query("DELETE FROM tb_user WHERE id = '" . $idUser . "'");
+    $id = $_POST['id'];
 
-    if ($hapusUser) {
-        $hapusOrtu = $koneksi->query("DELETE FROM tb_orang_tua WHERE id_user = '" . $id . "'");
+    $cekAnak = $koneksi->query("SELECT * FROM tb_anak WHERE id_user = (SELECT id_user FROM tb_orang_tua WHERE id = $id)");
+    $row = $cekAnak->num_rows;
 
-        
-        if ($hapusOrtu) {
-            echo 1;
-        } else {
-            echo 0;
-        }
+    if ($row > 0) {
+        $deleteOrtu = $koneksi->query("DELETE tb_user, tb_orang_tua, tb_anak FROM tb_user
+    INNER JOIN tb_orang_tua ON tb_orang_tua.id_user = tb_user.id
+    INNER JOIN tb_anak ON tb_anak.id_user = tb_user.id
+    WHERE tb_orang_tua.id = $id");
     } else {
-        echo 0;
+        $deleteOrtu = $koneksi->query("DELETE tb_user, tb_orang_tua FROM tb_user
+    INNER JOIN tb_orang_tua ON tb_orang_tua.id_user = tb_user.id
+    WHERE tb_orang_tua.id = $id");
+    }
+
+    if ($deleteOrtu) {
+        echo "berhasil";
+    } else {
+        echo "gagal";
     }
 }
 
@@ -35,7 +38,7 @@ if (isset($_POST['tambah'])) {
 
     $hashPass = md5($password);
 
-    // Ini mulai cek dulu emailnya biar unik
+    // Ini mulai cek emailnya biar unik
     $cekEmail = $koneksi->query("SELECT * FROM tb_user WHERE email = '$email'")->num_rows;
 
     if ($cekEmail) {
@@ -74,15 +77,15 @@ if (isset($_POST['ubah'])) {
 
     $ambilDataUser = $koneksi->query("SELECT id_user FROM tb_orang_tua WHERE id = '$id'")->fetch_assoc();
     $idUser = $ambilDataUser['id_user'];
-   
+
     $ubahUser = $koneksi->query("UPDATE tb_user SET name='$name', email='$email',  
     tingkat='$tingkat' WHERE id = '$idUser' ");
 
-    
+
     if ($ubahUser) {
         $ubahOrtu = $koneksi->query("UPDATE tb_orang_tua SET address='$address', 
         post_code='$post_code', pekerjaan='$pekerjaan' WHERE id = '$id' ");
-    
+
         if ($ubahOrtu) {
             echo "berhasil mengubah ortu";
         } else {
@@ -96,14 +99,14 @@ if (isset($_POST['ubah'])) {
 
 // ganti password
 if (isset($_POST['gantiPassword'])) {
-    $id = $_POST['id']; // ini id ortu
+    $id = $_POST['id']; // id ortu
     $password = $_POST['password'];
     $hashPass = md5($password);
-    
+
     $ambilDataUser = $koneksi->query("SELECT id_user FROM tb_orang_tua WHERE id = '$id'")->fetch_assoc();
     $idUser = $ambilDataUser['id_user'];
     $ubahUser = $koneksi->query("UPDATE tb_user SET password='$hashPass' WHERE id = '$idUser' ");
-  
+
 
     if ($ubahUser) {
         echo "berhasil mengubah password";
@@ -111,4 +114,3 @@ if (isset($_POST['gantiPassword'])) {
         echo "gagal mengubah password";
     }
 }
-

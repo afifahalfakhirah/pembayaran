@@ -5,28 +5,28 @@ session_start();
 // Get all data
 if (isset($_POST['getData'])) {
     $ambilAjaran= $koneksi->query("SELECT * FROM tb_tahun_ajaran");
-    $dataAjaran= []; // Ini Array
+    $dataAjaran= []; //Array
     while ($data = $ambilAjaran->fetch_array()) {
-        // Ini Looping
+        // Looping
         // Tiap loop, dimasukin ke array
         $dataAjaran[] = $data; // data loopnya dimasukin ke variabel ini
     }
-    echo json_encode($dataAjaran); // trus dikirim ke javascript di tabel
+    echo json_encode($dataAjaran); //  dikirim ke javascript di tabel
 }
 
 if (isset($_POST['getDataByID'])) {
     $id = $_POST['id'];
     $ambilAjaran= $koneksi->query("SELECT * FROM tb_tahun_ajaran WHERE id = $id");
-    $dataAjaran= []; // Ini Array
+    $dataAjaran= []; //Array
     while ($data = $ambilAjaran->fetch_array()) {
-        // Ini Looping
-        // Tiap loop, dimasukin ke array
+        //Looping
+        //Tiap loop, dimasukin ke array
         $dataAjaran[] = $data; // data loopnya dimasukin ke variabel ini
     }
     echo json_encode($dataAjaran);
 }
 
-// tambah anak
+// tambah
 if (isset($_POST['tambah'])) {
 
     $nama = $_POST['nama'];
@@ -44,7 +44,6 @@ if (isset($_POST['tambah'])) {
 
 // edit
 if (isset($_POST['ubah'])) {
-    // dah bener ini
     $id = $_POST['id'];
     $nama = $_POST['nama'];
     $bayar = $_POST['bayaran'];

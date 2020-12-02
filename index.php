@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('config/koneksi.php'); // Karna dipanggil di sini
+include('config/koneksi.php');
 
 if (!isset($_SESSION['id'])) {
   return header("location: login.php");
@@ -12,8 +12,7 @@ $title = "";
 //ambil data login
 $data = $koneksi->query("SELECT * FROM tb_user WHERE id = '" . $_SESSION['id'] . "'")->fetch_assoc();
 
-// Itu sudah ambil data yg login
-// skrng bikin logika
+// sudah ambil data yg login
 
 // sekarang tingkatannya
 $tingkat = $data['tingkat'];
@@ -53,17 +52,20 @@ if (!empty($page)) {
         }
         break;
       default:
-        include "page/dashboard.php";
+        $title = "Dashboard - " . $namaSitus;
         break;
     }
   } else {
-    // nah ini baru si ortu
+    //  ortu
     switch ($page) {
       case 'Dashboard':
         $title = "Dashboard - " . $namaSitus;
         break;
       case 'anak-saia':
         $title = "Anak Saya - " . $namaSitus;
+        break;
+      case 'pengumuman':
+        $title = "Pengumuman - " . $namaSitus;
         break;
       default:
         $title = "Dashboard - " . $namaSitus;
@@ -74,12 +76,6 @@ if (!empty($page)) {
   $title = "Dashboard - " . $namaSitus;
 }
 
-// Ini ambil semua data yang login, cara tahu yang login itu dari id tadi
-
-// ini $Koneksi itu ga tiba2 ada
-//template admin bootstrap
-
-// Masukin bagian2 tadi
 include('layout/header.php');
 ?>
 <!-- Page Wrapper -->
@@ -108,20 +104,20 @@ include('layout/header.php');
         <span>Dashboard</span></a>
     </li>
 
-   
+
 
     <?php
     if ($tingkat == 'orang tua') {
     ?>
       <li class="nav-item active">
         <a class="nav-link" href="index.php?page=anak-saia">
-          <i class="fas fa-fw fa-tachmometer-alt"></i>
-          <span>Berita</span></a>
+          <i class="fas fa-restroom"></i>
+          <span>Data Anak Saya</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="index.php?page=anak-saia">
-          <i class="fas fa-tachometer-alt"></i>
-          <span>Data Anak Saya</span></a>
+        <a class="nav-link" href="index.php?page=pengumuman">
+          <i class="far fa-bell"></i>
+          <span>Pengumuman</span></a>
       </li>
     <?php } ?>
 
@@ -151,6 +147,7 @@ include('layout/header.php');
           </div>
         </div>
       </li>
+
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
         <a class="nav-link" href="index.php?page=tahun-ajaran">
@@ -161,6 +158,16 @@ include('layout/header.php');
         <a class="nav-link" href="index.php?page=transaksi">
           <i class="fas fa-money-check-alt"></i>
           <span>Transaksi</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#" data-toggle="modal" aria-expanded="false" data-target="#laporan">
+          <i class="fas fa-money-check-alt"></i>
+          <span>Laporan</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="index.php?page=pengumuman">
+          <i class="fas fa-money-check-alt"></i>
+          <span>pengumuman</span></a>
       </li>
     <?php } ?>
 
@@ -189,6 +196,7 @@ include('layout/header.php');
             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fas fa-search fa-fw"></i>
             </a>
+
             <!-- Dropdown - Messages -->
             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
               <form class="form-inline mr-auto w-100 navbar-search">
@@ -203,25 +211,19 @@ include('layout/header.php');
               </form>
             </div>
           </li>
+
           <!-- Nav Item - User Information -->
           <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hi <?php echo $data['name']; ?></span>
-              <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+              <img class="img-profile rounded-circle" src="upload/profile/<?php echo $data['foto']; ?>">
             </a>
+
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" href="index.php?page=profil">
                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                 Profile
-              </a>
-              <a class="dropdown-item" href="#">
-                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                Settings
-              </a>
-              <a class="dropdown-item" href="#">
-                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                Activity Log
               </a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -257,7 +259,11 @@ include('layout/header.php');
                 }
                 break;
               case 'managemen-siswa':
-                include "page/Management/Siswa/management_siswa.php";
+                if ($aksi == 'lihat') {
+                  include "page/Management/Ortu/Aksi/lihat.php";
+                } else {
+                  include "page/Management/Siswa/management_siswa.php";
+                }
                 break;
               case 'tahun-ajaran':
                 include "page/TahunAjaran/tahunajaran.php";
@@ -268,16 +274,25 @@ include('layout/header.php');
                 } else {
                   include "page/Bendahara/transaksi.php";
                 }
+                break;
+              case 'profil':
+                include "profil.php";
+                break;
+              case 'pengumuman':
+                include "Pengumum/pengumuman.php";
                 break;
               default:
                 include "page/dashboard.php";
                 break;
             }
-          } else if ($tingkat == 'admin' || $tingkat == 'bendahara') {
-            // switch case buat halaman bendahara
+          } else  if ($tingkat == 'admin' || $tingkat == 'bendahara') {
             switch ($page) {
               case 'managemen-siswa':
-                include "page/Management/Siswa/management_siswa.php";
+                if ($aksi == 'lihat') {
+                  include "page/Management/Ortu/Aksi/lihat.php";
+                } else {
+                  include "page/Management/Siswa/management_siswa.php";
+                }
                 break;
               case 'tahun-ajaran':
                 include "page/TahunAjaran/tahunajaran.php";
@@ -288,16 +303,23 @@ include('layout/header.php');
                 } else {
                   include "page/Bendahara/transaksi.php";
                 }
+                break;
+              case 'laporan':
+                include "page/laporan.php";
+                break;
+              case 'profil':
+                include "profil.php";
+                break;
+              case 'pengumuman':
+                include "Pengumum/pengumuman.php";
                 break;
               default:
                 include "page/dashboard.php";
                 break;
             }
           } else {
-            // nah ini baru si ortu
+            // ortu
             switch ($page) {
-              case 'dashboard':
-                break;
               case 'anak-saia':
                 if ($aksi == 'lihat') {
                   include "page/OrangTua/Aksi/lihat.php";
@@ -306,6 +328,12 @@ include('layout/header.php');
                 } else {
                   include "page/OrangTua/anak.php";
                 }
+                break;
+              case 'profil':
+                include "profil.php";
+                break;
+              case 'pengumuman':
+                include "page/OrangTua/pengumumanOrtu.php";
                 break;
               default:
                 include "page/dashboard.php";
@@ -317,6 +345,31 @@ include('layout/header.php');
         }
         ?>
       </div>
+
+
+      <div class="modal" tabindex="-1" role="dialog" id="laporan">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Laporan</h5>
+            </div>
+            <div class="modal-body">
+              <p>Lihat laporan berdasarkan Bulan.</p>
+              <form method="POST" action="page/laporan.php">
+                <div class="form-group">
+                  <label>Bulan</label>
+                  <input class="form-control" type="month" name="daritanggal">
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Lihat</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <?php
       include('layout/footer.php');
       ?>

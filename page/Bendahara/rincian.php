@@ -59,6 +59,7 @@ $pembayaran = $sql2->fetch_assoc();
                             <option value="BNI" <?= $pembayaran['bank_pengirim'] == 'BNI' ? 'selected' : '' ?>>BNI</option>
                             <option value="BCA" <?= $pembayaran['bank_pengirim'] == 'BCA' ? 'selected' : '' ?>>BCA</option>
                             <option value="BJB" <?= $pembayaran['bank_pengirim'] == 'BJB' ? 'selected' : '' ?>>BJB</option>
+                            <option value="BRI" <?= $pembayaran['bank_pengirim'] == 'BRI' ? 'selected' : '' ?>>BRI</option>
                         </select>
                     </div>
                     <div class="form-group">

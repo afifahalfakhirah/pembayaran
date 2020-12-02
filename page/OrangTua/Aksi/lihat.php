@@ -48,7 +48,7 @@ $queryPembayaran = $koneksi->query("SELECT p.id, p.date, t.nama, t.bayaran, p.st
         ?>
             <tr>
                 <td><?= $no++; ?></td>
-                <td><?= $data['date'] ?></td>
+                <td><?= date('M', strtotime($data['date'])); ?></td> 
                 <td><?= $data['nama'] ?></td>
                 <td>Rp. <?= $data['bayaran']; ?></td>
                 <td><span class="badge badge-<?php if ($data['status'] == 'Belum bayar') echo 'danger'?><?php if ($data['status'] == 'Menunggu verifikasi') echo 'warning'?><?php if ($data['status'] == 'Sudah bayar') echo 'success'?>"><?= $data['status'] ?></span></td>

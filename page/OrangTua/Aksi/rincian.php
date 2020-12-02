@@ -63,6 +63,7 @@ $pembayaran = $sql2->fetch_assoc();
                             <option value="BNI" <?= $pembayaran['bank_pengirim'] == 'BNI' ? 'selected' : '' ?>>BNI</option>
                             <option value="BCA" <?= $pembayaran['bank_pengirim'] == 'BCA' ? 'selected' : '' ?>>BCA</option>
                             <option value="BJB" <?= $pembayaran['bank_pengirim'] == 'BJB' ? 'selected' : '' ?>>BJB</option>
+                            <option value="BRI" <?= $pembayaran['bank_pengirim'] == 'BRI' ? 'selected' : '' ?>>BRI</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -102,7 +103,6 @@ $pembayaran = $sql2->fetch_assoc();
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-
             reader.onload = function(e) {
                 $('#preview').attr('src', e.target.result);
                 $('#preview').css("display","block")
@@ -137,16 +137,21 @@ if (isset($_POST['simpan'])) {
 
     if ($terupload) {
 
-        $simpanKeDatabase = $koneksi->query("INSERT INTO tb_bukti_pembayaran (id_pembayaran, id_rekening_tujuan, nama_pengirim, no_rek_pengirim, bank_pengirim, struk_transfer) VALUES ('$id', '$rekening_tujuan', '$nama_pengirim', '$nomor_rekening', '$nama_bank', '$namaFile')");
-
-        $id_bukti_pembayaran = $koneksi->insert_id;
+        $simpanKeDatabase = $koneksi->query("INSERT INTO tb_bukti_pembayaran (id_pembayaran, id_rekening_tujuan, nama_pengirim, 
+        no_rek_pengirim, bank_pengirim, struk_transfer) VALUES ('$id', '$rekening_tujuan', '$nama_pengirim', '$nomor_rekening', 
+        '$nama_bank', '$namaFile')");
 
         if ($simpanKeDatabase) {
 
-            $updateStatusPembayaran = $koneksi->query("UPDATE tb_pembayaran SET status = 'Menunggu verifikasi', bukti_pembayaran = $id_bukti_pembayaran WHERE id = $id");
+            $updateStatusPembayaran = $koneksi->query("UPDATE tb_pembayaran SET status = 'Menunggu verifikasi' WHERE id = $id");
 
             if ($updateStatusPembayaran) {
-                echo "Berhasil menyimpan";
+                ?>
+                    <script>
+                        alert("Berhasil menyimpan pembayaran");
+                        window.location.href = "index.php?page=anak-saia&aksi=rincian&id=<?= $id ?>"
+                    </script>
+                <?php
             } else {
                 echo "Gagal menyimpan";
             }

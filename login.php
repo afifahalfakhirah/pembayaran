@@ -7,25 +7,6 @@ if ($_SESSION['id']){
 }
 
 ?>
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Pembayaran Paud Melati</title>
-    </head>
-    <body>
-        <center>
-            <h4>Silahkan Masuk</h4>
-            <form method="post" action="cek_login.php">
-                <label for="email">email</label>
-                <input type="text" name="email" id="email"><br>
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password"><br>
-                <input type="submit" name="masuk" value="Masuk">
-            </fors>
-        </center>
-    </body>
-    </html> -->
-
 
     <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +43,7 @@ if ($_SESSION['id']){
 
       <div class="col-lg-6">
         
-        <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card o-hidden border-0 my-5">
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
@@ -81,9 +62,6 @@ if ($_SESSION['id']){
                       <button type="submit" name="masuk" class="btn btn-primary btn-user btn-block">Login</button>
                       <hr>
                     </form>
-                    <div class="text-center">
-                      <a class="small" href="register.php">Create an Account!</a>
-                    </div>
                   </div>
                 </div>
               </div>
