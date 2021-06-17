@@ -89,7 +89,7 @@ include('layout/header.php');
       <div class="sidebar-brand-icon rotate-n-15">
         <i class="fas fa-child"></i>
       </div>
-      <div class="sidebar-brand-text mx-4">PAUD MELATI <sup></sup></div>
+      <div class="sidebar-brand-text mx-4">PAUD MELATI III <sup></sup></div>
     </a>
 
     <div class="sidebar-heading text-center text-light">

@@ -156,6 +156,10 @@ if ($tingkat == 'admin' || $tingkat == 'bendahara') {
                 </div>
             </div>
 
+            <div class="col-lg">
+                <canvas id="myChart"></canvas>
+            </div>
+
         </div>
 
     <?php } else { ?>
@@ -175,7 +179,7 @@ if ($tingkat == 'admin' || $tingkat == 'bendahara') {
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     NAMA SEKOLAH</div>
-                                <div class="h6 mb-0 font-weight-bold text-gray-800">PAUD MELATI</div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">PAUD MELATI III</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-school fa-2x text-gray-300"></i>
@@ -227,14 +231,14 @@ if ($tingkat == 'admin' || $tingkat == 'bendahara') {
                 <div class="text-center">
                     <div class="card-header py-3">
                         <div class="text-center">
-                            <h6 class="h3 m-3 font-weight-bold text-info">PAUD MELATI</h6>
+                            <h6 class="h3 m-3 font-weight-bold text-info">PAUD MELATI III</h6>
                         </div>
                         <div class="card-body">
                             <div class="text-center">
                                 <img src="assets/img/logo-removebg-preview.png" class="img-thumbnail" width="300px">
                             </div>
                             <div class="text-center">
-                                <p>Pendidikan Anak Usia Dini Melati</p>
+                                <p>Pendidikan Anak Usia Dini Melati III</p>
                             </div>
                             <div class="text-center">
                                 <p>Perum Griya Curug
@@ -251,3 +255,6 @@ if ($tingkat == 'admin' || $tingkat == 'bendahara') {
         </div>
     <?php } ?>
     </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="assets/js/grafik.js"></script>

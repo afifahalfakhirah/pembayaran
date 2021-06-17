@@ -104,7 +104,7 @@ $sqlAnak  = $koneksi->query("SELECT * FROM tb_anak WHERE id_user = $id_user");
                     <input type="hidden" name="tambah" value="true">
                     <div class="form-group">
                         <label>Nama Siswa</label>
-                        <input type="text" name="name" class="form-control">
+                        <input type="text" onkeydown="preventNumberInput(event)" onkeyup="preventNumberInput(event)" name="name" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>NIS</label>
@@ -120,7 +120,7 @@ $sqlAnak  = $koneksi->query("SELECT * FROM tb_anak WHERE id_user = $id_user");
                     </div>
                     <div class="form-group">
                         <label>Tempat Lahir</label>
-                        <input type="text" name="tempat_lahir" class="form-control">
+                        <input type="text" onkeydown="preventNumberInput(event)" onkeyup="preventNumberInput(event)" name="tempat_lahir" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Tanggal Lahir</label>
@@ -164,7 +164,7 @@ while ($data = $sql2->fetch_assoc()) {
                         <input type="hidden" name="ubah" value="true">
                         <div class="form-group">
                             <label>Nama</label>
-                            <input type="text" name="name" class="form-control" value="<?php echo $data['name']; ?>">
+                            <input type="text" onkeydown="preventNumberInput(event)" onkeyup="preventNumberInput(event)" name="name" class="form-control" value="<?php echo $data['name']; ?>">
                         </div>
                         <div class="form-group">
                             <label>NIS</label>
@@ -180,7 +180,7 @@ while ($data = $sql2->fetch_assoc()) {
                         </div>
                         <div class="form-group">
                             <label>Tempat Lahir</label>
-                            <input type="text" name="tempat_lahir" class="form-control" value="<?php echo $data['tempat_lahir']; ?>">
+                            <input type="text" onkeydown="preventNumberInput(event)" onkeyup="preventNumberInput(event)" name="tempat_lahir" class="form-control" value="<?php echo $data['tempat_lahir']; ?>">
                         </div>
                         <div class="form-group">
                             <label>Tanggal Lahir</label>
@@ -260,3 +260,17 @@ while ($data = $sql2->fetch_assoc()) {
         }
     }
 </script>
+<script>
+    function preventNumberInput(e) {
+      var keyCode = (e.keyCode ? e.keyCode : e.which);
+      if (keyCode > 47 && keyCode < 58 || keyCode > 95 && keyCode < 107) {
+        e.preventDefault();
+      }
+    }
+
+    $(document).ready(function() {
+      $('#text_field').keypress(function(e) {
+        preventNumberInput(e);
+      });
+    })
+  </script>

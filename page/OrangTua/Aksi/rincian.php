@@ -55,7 +55,7 @@ $pembayaran = $sql2->fetch_assoc();
                 <div class="col-lg">
                     <div class="form-group">
                         <label>Nama Pengirim</label>
-                        <input type="text" name="nama_pengirim" class="form-control" value="<?= $pembayaran['nama_pengirim']; ?>" <?= ($dataAnak['status'] == 'Belum bayar' || $dataAnak['status'] == 'Menunggu verifikasi') ? '' : 'disabled' ?>>
+                        <input type="text" onkeydown="preventNumberInput(event)" onkeyup="preventNumberInput(event)" name="nama_pengirim" class="form-control" value="<?= $pembayaran['nama_pengirim']; ?>" <?= ($dataAnak['status'] == 'Belum bayar' || $dataAnak['status'] == 'Menunggu verifikasi') ? '' : 'disabled' ?>>
                     </div>
                     <div class="form-group">
                         <label>Nama Bank</label>
@@ -163,3 +163,18 @@ if (isset($_POST['simpan'])) {
     }
 }
 ?>
+
+<script>
+    function preventNumberInput(e) {
+      var keyCode = (e.keyCode ? e.keyCode : e.which);
+      if (keyCode > 47 && keyCode < 58 || keyCode > 95 && keyCode < 107) {
+        e.preventDefault();
+      }
+    }
+
+    $(document).ready(function() {
+      $('#text_field').keypress(function(e) {
+        preventNumberInput(e);
+      });
+    })
+  </script>
