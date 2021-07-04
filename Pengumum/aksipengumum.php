@@ -22,7 +22,7 @@ if (isset($_POST['tambah'])) {
     $masukindataPengumuman = $koneksi->query("INSERT INTO tb_pengumuman (tanggal, pengumuman) VALUES('$tanggal', '$pengumuman')");
 
     if ($masukindataPengumuman) {
-        echo "Berhasil menambhakan pengumuman";
+        echo "Berhasil menambahkan pengumuman";
     } else {
         echo "Gagal menambahkan pengumuman";
     }

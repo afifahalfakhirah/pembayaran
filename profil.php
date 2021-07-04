@@ -110,7 +110,7 @@ if ($admin['tingkat'] == 'admin' || $admin['tingkat'] == 'bendahara') {
             $koneksi->query("UPDATE tb_user SET password='$passfix' WHERE id='$id'");
             echo "<script type='text/javascript'>alert('Berhasil ganti password!'); window.location.href='index.php';</script>";
         } else {
-            echo "<script type='text/javascript'>alert('Password lama ga cocok!');</script>";
+            echo "<script type='text/javascript'>alert('Password lama tidak cocok!');</script>";
         }
     }
 
